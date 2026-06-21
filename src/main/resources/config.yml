@@ -1,0 +1,64 @@
+# =============================================
+# RegionMC - Конфигурация плагина защиты регионов
+# =============================================
+
+# ========== ОСНОВНЫЕ НАСТРОЙКИ ==========
+settings:
+  # Язык по умолчанию (ru, en и т.д.)
+  default-language: "ru"
+
+  # Включение/отключение уведомлений о входе/выходе из региона
+  notifications:
+    enabled: true
+
+  # Автоматическое обновление конфигурации
+  auto-update-config: true
+
+  # Сохранять данные регионов в отдельные файлы
+  save-regions-individually: true
+
+  # Интервал автосохранения (в тиках, 20 тиков = 1 секунда)
+  auto-save-interval: 6000  # 5 минут
+
+  # Максимальное количество регионов на игрока
+  max-regions-per-player: 5
+
+  # Включить глобальные регионы для миров
+  enable-global-regions: true
+
+  # Эффекты при отмене взрыва крипера
+  creeper-cancel-effects: true
+
+  # Автоматическая синхронизация времени между мирами
+  auto-time-sync: true
+
+  # Уведомления для владельцев регионов
+  notify-owners-on-entry: true
+  notify-owners-on-exit: false
+
+# ========== НАСТРОЙКИ ОТЛАДКИ ==========
+debug:
+  enabled: true
+  level: BASIC
+  categories:
+    ALL: false
+    gui: true
+    regions: true
+    commands: true
+    flags: true
+    adminmanager: true
+
+# ========== НАСТРОЙКИ ОБНОВЛЕНИЙ ==========
+updates:
+  # Проверять обновления автоматически
+  check-for-updates: true
+
+  # Ресурс для проверки (spigot, modrinth, craftbukkit)
+  # Не трогайте
+  resource: "modrinth"
+
+  # Интервал проверки (в часах)
+  check-interval: 24
+
+  # Уведомлять администраторов
+  notify-admins: true

@@ -1,0 +1,332 @@
+name: RegionMC
+version: 0.0.2-beta-7
+main: org.KillerYT.regionMC.RegionMC
+api-version: '1.21'
+description: Advanced Dynamic Region Protection
+author: KillerYT
+website: https://github.com/KillerYT
+load: POSTWORLD
+
+dependencies:
+  server:
+    PlaceholderAPI:
+      load: BEFORE
+      required: false
+      join-classpath: true
+
+commands:
+  regionmc:
+    description: Main region management command
+    usage: /<command> <subcommand>
+    aliases: [region, rg]
+    permission: regionmc.command.region
+    permission-message: "§cУ вас нет прав на использование этой команды!"
+
+permissions:
+  regionmc.command.region:
+    description: Доступ к основной команде /regionmc, /region, /rg
+    default: false
+
+  regionmc.command.help:
+    description: Доступ к /regionmc help
+    default: false
+
+  regionmc.command.claim:
+    description: Доступ к /regionmc create и /regionmc claim
+    default: false
+
+  regionmc.command.pos:
+    description: Доступ к /regionmc pos1 и /regionmc pos2
+    default: false
+
+  regionmc.command.info:
+    description: Доступ к /regionmc info
+    default: false
+
+  regionmc.command.list:
+    description: Доступ к /regionmc list
+    default: false
+
+  regionmc.command.flag:
+    description: Доступ к /regionmc flag
+    default: false
+
+  regionmc.command.addmember:
+    description: Доступ к /regionmc addmember
+    default: false
+
+  regionmc.command.addowner:
+    description: Доступ к /regionmc addowner
+    default: false
+
+  regionmc.command.removemember:
+    description: Доступ к /regionmc removemember
+    default: false
+
+  regionmc.command.removeowner:
+    description: Доступ к /regionmc removeowner
+    default: false
+
+  regionmc.command.priority:
+    description: Доступ к /regionmc priority
+    default: false
+
+  regionmc.command.delete:
+    description: Доступ к /regionmc delete и /regionmc remove
+    default: false
+
+  regionmc.command.wand:
+    description: Доступ к /regionmc wand
+    default: false
+
+  regionmc.command.expand:
+    description: Доступ к /regionmc expand
+    default: false
+
+  regionmc.command.show:
+    description: Доступ к /regionmc show и /regionmc hide
+    default: false
+
+  regionmc.command.reload:
+    description: Доступ к /regionmc reload
+    default: false
+
+  regionmc.command.testplaceholders:
+    description: Доступ к /regionmc testplaceholders
+    default: false
+
+  regionmc.command.limit:
+    description: Доступ к /regionmc limit
+    default: false
+
+  # Права на действия с регионами
+  regionmc.region.create:
+    description: Право создавать регионы
+    default: false
+    children:
+      regionmc.command.claim: true
+
+  regionmc.region.delete:
+    description: Право удалять регионы
+    default: false
+    children:
+      regionmc.command.delete: true
+
+  # Права на управление флагами - ПОЛНЫЙ СПИСОК
+  regionmc.flags.*:
+    description: Полный доступ ко всем флаги
+    default: false
+    children:
+      regionmc.command.flag: true
+      # Флаги строительства и взаимодействия
+      regionmc.flags.build: true
+      regionmc.flags.break: true
+      regionmc.flags.interact: true
+      regionmc.flags.use: true
+      regionmc.flags.use-items: true
+
+      # Флаги PvP и урона
+      regionmc.flags.pvp: true
+      regionmc.flags.mob-damage: true
+      regionmc.flags.fall-damage: true
+      regionmc.flags.ender-dragon-damage: true
+
+      # Флаги доступа и перемещения
+      regionmc.flags.entry: true
+      regionmc.flags.exit: true
+      regionmc.flags.chest-access: true
+      regionmc.flags.enderchest: true
+
+      # Флаги предметов
+      regionmc.flags.item-pickup: true
+      regionmc.flags.item-drop: true
+      regionmc.flags.exp-drops: true
+
+      # Флаги окружающей среды
+      regionmc.flags.fire-spread: true
+      regionmc.flags.explosions: true
+      regionmc.flags.creeper-explosion: true
+      regionmc.flags.pistons: true
+      regionmc.flags.grass-growth: true
+      regionmc.flags.leaf-decay: true
+      regionmc.flags.enderman-grief: true
+      regionmc.flags.time-lock: true
+
+      # Флаги мобов
+      regionmc.flags.mob-spawning: true
+
+      # Флаги коммуникаций и команд
+      regionmc.flags.block-chat: true
+      regionmc.flags.blockcmd: true
+
+      # Прочие флаги
+      regionmc.flags.sleep: true
+
+  # Флаги строительства и взаимодействия
+  regionmc.flags.build:
+    description: Управление флагом строительства (build)
+    default: false
+
+  regionmc.flags.break:
+    description: Управление флагом ломания блоков (break)
+    default: false
+
+  regionmc.flags.interact:
+    description: Управление флагом взаимодействия (interact)
+    default: false
+
+  regionmc.flags.use:
+    description: Управление флагом использования (use)
+    default: false
+
+  regionmc.flags.use-items:
+    description: Управление флагом использования предметов (use-items)
+    default: false
+
+  # Флаги PvP и урона
+  regionmc.flags.pvp:
+    description: Управление флагом PvP
+    default: false
+
+  regionmc.flags.mob-damage:
+    description: Управление флагом урона от мобов (mob-damage)
+    default: false
+
+  regionmc.flags.fall-damage:
+    description: Управление флагом урона от падения (fall-damage)
+    default: false
+
+  regionmc.flags.ender-dragon-damage:
+    description: Управление флагом урона от эндер-дракона (ender-dragon-damage)
+    default: false
+
+  # Флаги доступа и перемещения
+  regionmc.flags.entry:
+    description: Управление флагом входа в регион (entry)
+    default: false
+
+  regionmc.flags.exit:
+    description: Управление флагом выхода из региона (exit)
+    default: false
+
+  regionmc.flags.chest-access:
+    description: Управление флагом доступа к сундукам (chest-access)
+    default: false
+
+  regionmc.flags.enderchest:
+    description: Управление флагом доступа к эндер-сундукам (enderchest)
+    default: false
+
+  # Флаги предметов
+  regionmc.flags.item-pickup:
+    description: Управление флагом подбора предметов (item-pickup)
+    default: false
+
+  regionmc.flags.item-drop:
+    description: Управление флагом выброса предметов (item-drop)
+    default: false
+
+  regionmc.flags.exp-drops:
+    description: Управление флагом выпадения опыта (exp-drops)
+    default: false
+
+  # Флаги окружающей среды
+  regionmc.flags.fire-spread:
+    description: Управление флагом распространения огня (fire-spread)
+    default: false
+
+  regionmc.flags.explosions:
+    description: Управление флагом взрывов (explosions)
+    default: false
+
+  regionmc.flags.creeper-explosion:
+    description: Управление флагом взрывов криперов (creeper-explosion)
+    default: false
+
+  regionmc.flags.pistons:
+    description: Управление флагом работы поршней (pistons)
+    default: false
+
+  regionmc.flags.grass-growth:
+    description: Управление флагом роста травы (grass-growth)
+    default: false
+
+  regionmc.flags.leaf-decay:
+    description: Управление флагом распада листьев (leaf-decay)
+    default: false
+
+  regionmc.flags.enderman-grief:
+    description: Управление флагом грифа эндерменов (enderman-grief)
+    default: false
+
+  regionmc.flags.time-lock:
+    description: Управление флагом блокировки времени (time-lock)
+    default: false
+
+  # Флаги мобов
+  regionmc.flags.mob-spawning:
+    description: Управление флагом спавна мобов
+    default: false
+
+  # Флаги коммуникаций и команд
+  regionmc.flags.block-chat:
+    description: Управление флагом блокировки чата (block-chat)
+    default: false
+
+  regionmc.flags.blockcmd:
+    description: Управление флагом блокировки команд (blockcmd)
+    default: false
+
+  # Прочие флаги
+  regionmc.flags.sleep:
+    description: Управление флагом сна (sleep)
+    default: false
+
+    # Группы
+  regionmc.command.user:
+    description: Базовые права пользователя
+    default: false
+    children:
+      regionmc.command.region: true
+      regionmc.command.help: true
+      regionmc.command.info: true
+      regionmc.command.list: true
+      regionmc.command.limit: true
+      regionmc.command.pos: true
+      regionmc.command.wand: true
+      regionmc.command.show: true
+      regionmc.region.create: true
+      regionmc.region.delete: true
+      regionmc.command.addmember: true
+      regionmc.command.addowner: true
+      regionmc.command.removemember: true
+      regionmc.command.removeowner: true
+      regionmc.command.priority: true
+      regionmc.flags.build: true
+      regionmc.flags.break: true
+      regionmc.flags.interact: true
+      regionmc.flags.use: true
+      regionmc.flags.use-items: true
+      regionmc.flags.pvp: true
+      regionmc.flags.mob-damage: true
+      regionmc.flags.fall-damage: true
+      regionmc.flags.ender-dragon-damage: true
+      regionmc.flags.entry: true
+      regionmc.flags.exit: true
+      regionmc.flags.chest-access: true
+      regionmc.flags.enderchest: true
+      regionmc.flags.item-pickup: true
+      regionmc.flags.item-drop: true
+      regionmc.flags.exp-drops: true
+      regionmc.flags.fire-spread: true
+      regionmc.flags.explosions: true
+      regionmc.flags.creeper-explosion: true
+      regionmc.flags.pistons: true
+      regionmc.flags.grass-growth: true
+      regionmc.flags.leaf-decay: true
+      regionmc.flags.enderman-grief: true
+      regionmc.flags.time-lock: true
+      regionmc.flags.mob-spawning: true
+      regionmc.flags.block-chat: true
+      regionmc.flags.blockcmd: true
+      regionmc.flags.sleep: true

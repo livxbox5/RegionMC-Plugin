@@ -1,0 +1,103 @@
+{
+    "checksum": "ca0d8b763e2ecbb93eb5554ec1e615d8fdcb99ac0d8973ab601b8bec0afea7a4",
+    "data": {
+    "id": "8485288a-7a68-4f51-a58f-88947cc2e737",
+    "createdAt": 1764676140253,
+    "updatedAt": 1764676153379,
+    "title": "Прив",
+    "messages": [
+        {
+            "id": "e03aeb0c-68c5-45c0-b301-cc73774104f9",
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "Прив"
+                }
+            ],
+            "context": {
+                "currentFile": {
+                    "path": "src/main/resources/Settings/limit.yml",
+                    "fsPath": "E:/project/project/RegionMC/src/main/resources/Settings/limit.yml",
+                    "sources": [
+                        "opened_tab"
+                    ],
+                    "content": "# =============================================\n# Настройки лимитов размеров регионов\n# =============================================\n\nlimits:\n  Enable: true # Если True - лимиты включены, Если False - лимиты отключены\n\nsize-limits:\n  # Лимит по умолчанию (-1 = без лимита)\n  default-limit: -1\n\n  # Лимиты через пермишены\n  ######################################\n  # permission-limits: [] не используется\n  #\n  # Шаблон\n  #permission-limits:\n  #  - limit: 500 (Блоков)\n  #    permission: \"regionmc.limit.500\" (Permission)\n  #######################################\n  permission-limits:\n    - limit: 500\n      permission: \"regionmc.limit.500\"\n    - limit: 1000\n      permission: \"regionmc.limit.1000\"\n    - limit: 5000\n      permission: \"regionmc.limit.5000\"\n    - limit: 10000\n      permission: \"regionmc.limit.10000\"\n    - limit: -1\n      permission: \"regionmc.limit.unlimited\"\n\n  # Лимиты через группы\n\n  ######################################\n  # group-limits: [] не используется\n  # Если luckperms если группа deluxe\n  # Добав deluxe: 1000\n  # Группа из Luckperms : сколько блогов лимит надо 100 блоков\n  #######################################\n  group-limits:\n    default: 500\n    vip: 1000\n    premium: 5000\n    admin: -1\n\n  # Приоритет проверки\n  check-priority: \"permission-first\"",
+                    "language": "yaml"
+                }
+            },
+            "createdAt": 1764676140275,
+            "isInternal": false,
+            "rawContent": {
+                "type": "doc",
+                "content": [
+                    {
+                        "type": "paragraph",
+                        "content": [
+                            {
+                                "type": "text",
+                                "text": "Прив"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "autoAppliedRules": []
+        },
+        {
+            "id": "82810284-d431-431b-b99e-77c5568552d8",
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "The request was interrupted due to an error, continue from where you left off"
+                }
+            ],
+            "createdAt": 1764676144814,
+            "isInternal": true,
+            "isHidden": true
+        },
+        {
+            "id": "d32e8371-1eb2-43de-8f5c-9f94eebe1a4b",
+            "role": "user",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "The request was interrupted due to an error, continue from where you left off"
+                }
+            ],
+            "createdAt": 1764676151175,
+            "isInternal": true,
+            "isHidden": true
+        },
+        {
+            "id": "b0972866-5ef5-4cc0-8ed6-9e497eabdbc0",
+            "role": "system",
+            "content": [
+                {
+                    "type": "errorText",
+                    "text": "Authorization failed: Please try logging out and logging in again. If the problem persists, contact support.",
+                    "actions": [
+                        {
+                            "type": "externalAction",
+                            "title": "Regenerate",
+                            "action": "regenerateLastAnswer"
+                        }
+                    ]
+                }
+            ],
+            "createdAt": 1764676153379,
+            "isInternal": false
+        }
+    ],
+    "isAgent": true,
+    "isCustomAgent": false,
+    "isUnitTestsAgent": false,
+    "isE2EAgent": false,
+    "isWebDevAgent": false,
+    "isQnaAgent": false,
+    "isRepoInfoAgent": false,
+    "model": "auto",
+    "agentsRuntime": "zen-cli"
+}
+}

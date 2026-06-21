@@ -1,0 +1,92 @@
+//file:noinspection GroovyUnusedAssignment
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'io.freefair.lombok' version '8.6' // Добавляем Lombok если используете
+}
+
+group = 'org.KillerYT'
+version = '0.0.2-beta-8'
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url = 'https://repo.helpch.at/releases/' }
+    maven { url = 'https://repo.extendedclip.com/content/repositories/placeholderapi/' }
+    mavenLocal()
+
+    maven {
+        url = 'https://repo.lucko.me/'
+        content {
+            includeGroup 'net.luckperms'
+        }
+    }
+
+    // Добавьте репозиторий для slimjar (если он действительно нужен)
+    maven { url = 'https://jitpack.io' }
+    maven { url = 'https://oss.sonatype.org/content/repositories/snapshots' }
+}
+
+configurations {
+    // Создаем конфигурацию для разработки
+    developmentOnly
+    compileClasspath.extendsFrom developmentOnly
+    runtimeClasspath.extendsFrom developmentOnly
+}
+
+dependencies {
+    compileOnly("io.papermc.paper:paper-api:1.21.11-R0.1-SNAPSHOT")
+    compileOnly 'org.jetbrains:annotations:24.0.1'
+    compileOnly 'net.luckperms:api:5.4'
+    //compileOnly 'me.clip:placeholderapi:2.11.7'
+    implementation 'me.clip:placeholderapi:2.11.7'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.17.2'
+    implementation 'com.fasterxml.jackson.core:jackson-core:2.17.2'
+    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.17.2'
+    implementation 'net.luckperms:api:5.4'
+    }
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+    options.release = 21
+}
+
+sourceSets {
+    main {
+        resources {
+            srcDirs = ['src/main/resources', 'resource']
+        }
+    }
+}
+
+// Процессинг ресурсов для подстановки переменных
+processResources {
+    filesMatching('paper-plugin.yml') {
+        expand version: version
+    }
+    filteringCharset = 'UTF-8'
+}
+
+shadowJar {
+    archiveFileName = "RegionMC-${version}.jar"
+    archiveClassifier = ''
+
+    relocate 'com.fasterxml.jackson', 'org.killeryt.regionmc.libs.jackson'
+
+    minimize {
+        enabled = false
+    }
+}
+
+// Задача для скачивания зависимостей для разработки
+tasks.register('downloadPlaceholderAPI', Copy) {
+    from configurations.developmentOnly
+    //noinspection GrDeprecatedAPIUsage
+    into "$buildDir/libs/dependencies"
+}

@@ -1,0 +1,457 @@
+# RegionMC Russian Language File
+# Полная и организованная версия
+
+prefix: "&6[RegionMC]&r "
+no-prefix: "&6[RegionMC]&r "
+
+# Основные команды
+player-only: "&cЭта команда только для игроков!"
+unknown-command: "&cНеизвестная команда!"
+no-permission: "&cУ вас нет прав для этой команды!"
+invalid-number: "&cНеверное число: {input}"
+
+# Использование команд
+commands:
+  no-permission: "&cУ вас нет прав для этой команды!"
+  usage: "&eИспользование: &7{usage}"
+  claim: "&eИспользование: &7/region claim <название>"
+  delete: "&eИспользование: &7/region delete <название>"
+  info: "&eИспользование: &7/region info <название>"
+  list: "&eИспользование: &7/region list [страница]"
+  flag: "&eИспользование: &7/region flag <регион> <флаг> <значение>"
+  addmember: "&eИспользование: &7/region addmember <регион> <игрок>"
+  addowner: "&eИспользование: &7/region addowner <регион> <игрок>"
+  removemember: "&eИспользование: &7/region removemember <регион> <игрок>"
+  removeowner: "&eИспользование: &7/region removeowner <регион> <игрок>"
+  priority: "&eИспользование: &7/region priority <регион> <число>"
+  expand: "&eИспользование: &7/region expand <блоки> [up|down|north|south|east|west]"
+  wand: "&eИспользование: &7/region wand"
+  bypass: "&eИспользование: &7/region bypass"
+  reload:
+    use: "&eИспользование: &7/region reload"
+    start: "&aПерезагружаю RegionMC..."
+    success: "&aПлагин перезагружен успешно!"
+    error: "&cНе удалось перезагрузить RegionMC!"
+
+# Создание и управление регионами
+region:
+  not-found: "&cРегион '&e{name}&c' не найден!"
+  exists: "&cРегион '&e{name}&c' уже существует!"
+  created: "&aРегион '&e{name}&a' успешно создан!"
+  deleted: "&aРегион '&e{name}&a' успешно удален!"
+  renamed: "&aРегион переименован в '&e{name}&a'!"
+  no-regions: "&cУ вас нет регионов!"
+  enter: "&aВы вошли в регион &e{name}"
+  exit: "&cВы вышли из региона &e{name}"
+  enter-owner: "&aВы вошли в свой регион &e{name}"
+  exit-owner: "&cВы вышли из своего региона &e{name}"
+  enter-member: "&aВы вошли в регион &e{name} (участник)"
+  exit-member: "&cВы вышли из региона &e{name} (участник)"
+
+  create:
+    invalid-name: "&cНеверное имя региона! Используйте буквы, цифры, подчеркивания (3-16 символов)"
+
+  member:
+    add:
+      success: "&aИгрок '&e{0}&a' добавлен как участник в регион '&e{1}&a'"
+      failed: "&cНе удалось добавить игрока '&e{0}&c' в регион '&e{1}&c'"
+    remove:
+      success: "&aИгрок '&e{0}&a' удален из участников региона '&e{1}&a'"
+      failed: "&cНе удалось удалить игрока '&e{0}&c' из региона '&e{1}&c'"
+
+  owner:
+    add:
+      success: "&aИгрок '&e{0}&a' добавлен как владелец в регион '&e{1}&a'"
+      failed: "&cНе удалось добавить игрока '&e{0}&c' как владельца региона '&e{1}&c'"
+    remove:
+      success: "&aИгрок '&e{0}&a' удален из владельцев региона '&e{1}&a'"
+      failed: "&cНе удалось удалить игрока '&e{0}&c' из владельцев региона '&e{1}&c'"
+
+  priority-set: "&aПриоритет региона '&e{0}&a' установлен на &e{1}"
+  priority-error: "&cНе удалось установить приоритет региона!"
+  different-worlds: "&cПозиции должны быть в одном мире!"
+
+  # Выделение
+  pos1-set: "&aПозиция 1 установлена в &e{x}&a, &e{y}&a, &e{z}&a"
+  pos2-set: "&aПозиция 2 установлена в &e{x}&a, &e{y}&a, &e{z}&a"
+  selection-cleared: "&aВыделение очищено!"
+  no-selection: "&cПозиции не установлены! Используйте &e/region pos1 &cи &e/region pos2"
+
+  # Участники (старый формат)
+  member-added: "&aИгрок '&e{player}&a' добавлен в регион '&e{region}&a'"
+  member-removed: "&aИгрок '&e{player}&a' удален из региона '&e{region}&a'"
+  owner-added: "&aИгрок '&e{player}&a' добавлен как владелец в '&e{region}&a'"
+  owner-removed: "&aИгрок '&e{player}&a' удален как владелец из '&e{region}&a'"
+
+  # Флаги
+  flag-set: "&aФлаг '&e{flag}&a' установлен в '&e{value}&a' для '&e{region}&a'"
+  flag-removed: "&aФлаг '&e{flag}&a' удален из '&e{region}&a'"
+
+  # Система расширения
+  expand:
+    success: "&aРегион расширен на &e{0}&a блоков в направлении: &e{1}"
+    auto-direction: "&6Автоматически определено направление: &e{0}"
+    failed: "&cНе удалось расширить регион"
+    no-selection: "&cРегион не выбран! Используйте &e/region pos1 &cи &e/region pos2 &cдля выбора позиций"
+    direction-up: "верх"
+    direction-down: "низ"
+    direction-north: "север"
+    direction-south: "юг"
+    direction-east: "восток"
+    direction-west: "запад"
+  notify:
+    enter: "&eИгрок &6{1} &eзашёл в ваш регион &6{0}"
+    exit: "&eИгрок &6{1} &eвышел из вашего региона &6{0}"
+
+# Описания флагов
+flags:
+  break: "Разрешить или запретить ломать блоки"
+  build: "Разрешить или запретить ставить блоки"
+  interact: "Разрешить или запретить взаимодействие с объектами"
+  pvp: "Разрешить или запретить PvP"
+  entry: "Разрешить или запретить вход в регион"
+  exit: "Разрешить или запретить выход из региона"
+  use: "Разрешить или запретить использование предметов"
+  enderchest: "Разрешить или запретить использование эндерсундука"
+  mob-spawning: "Разрешить или запретить спавн мобов"
+  ender-dragon-grief: "Разрешить или запретить урон от эндердракона"
+  fire-spread: "Разрешить или запретить распространение огня"
+  explosions: "Разрешить или запретить взрывы"
+  enderman-grief: "Разрешить или запретить эндерменам поднимать блоки"
+  use-items: "Разрешить или запретить использование предметов"
+  time-lock: "Блокировка времени (day/night/deny)"
+  autosave: "Автосохранение региона"
+  greeting: "Приветственное сообщение"
+  farewell: "Прощальное сообщение"
+  damage-animals: "Разрешить или запретить наносить урон дружелюбным животным"
+  ride: "Разрешить или запретить садиться на транспорт или животных"
+  respawn-anchors: "Разрешить или запретить использовать якоря возрождения"
+  tnt: "Разрешить или запретить детонацию и разрушение блоков от динамита (TNT)"
+  mob-damage: "Разрешить или запретить урон от мобов"
+  ender-dragon-damage: "Разрешить или запретить урон от эндер-дракона"
+  place: "Разрешить или запретить размещение блоков"
+  chest-access: "Разрешить или запретить доступ к сундукам"
+  item-drop: "Разрешить или запретить выбрасывание предметов"
+  item-pickup: "Разрешить или запретить подбирание предметов"
+  fall-damage: "Разрешить или запретить урон от падения"
+  leaf-decay: "Разрешить или запретить увядание листвы"
+  grass-growth: "Разрешить или запретить рост травы"
+  pistons: "Разрешить или запретить движение поршней"
+  sleep: "Разрешить или запретить сон в кроватях"
+  blockcmd: "Блокировка команд в регионе"
+  block-chat: "Блокировка чата в регионе"
+
+# Сообщения защиты
+protection:
+  denied: "&cДействие запрещено в этой области!"
+  break: "&cВы не можете ломать блоки здесь!"
+  build: "&cВы не можете строить здесь!"
+  interact: "&cВы не можете взаимодействовать здесь!"
+  use: "&cВы не можете использовать предметы здесь!"
+  pvp: "&cPvP отключен здесь!"
+  entry: "&cВы не можете войти в этот регион!"
+  enderchest: "&cВы не можете использовать эндерсундуки здесь!"
+  container: "&cВы не можете открывать контейнеры здесь!"
+  door: "&cВы не можете использовать двери здесь!"
+  mob-spawning: "&cСпавн мобов отключен здесь!"
+  ender-dragon-grief: "&cУрон от эндердракона отключен здесь!"
+  fire-spread: "&cРаспространение огня отключено здесь!"
+  explosions: "&cВзрывы отключены здесь!"
+  enderman-grief: "&cЭндермены не могут поднимать блоки здесь!"
+  use-items: "&cИспользование предметов отключено здесь!"
+  command: "&cВы не можете использовать команды здесь!"
+  time-change: "&cИзменение времени запрещено в этом регионе!"
+  greeting: "&aДобро пожаловать в регион: &e{region}"
+  farewell: "&cВы покинули регион: &e{region}"
+  damage-animals: "&cВы не можете наносить урон животным здесь!"
+  ride: "&cВы не можете садиться на транспорт или животных здесь!"
+  respawn-anchors: "&cВы не можете использовать якоря возрождения здесь!"
+  tnt: "&cВы не можете ставить TNT в этом регионе!"
+  tnt-place: "&cВы не можете устанавливать TNT в этом регионе!"
+  tnt-explode: "&cВзрыв TNT заблокирован в этом регионе!"
+  mob-damage: "&cВы не можете получать урон от мобов здесь!"
+  ender-dragon-damage: "&cЭндер-дракон не может наносить урон здесь!"
+  place: "&cВы не можете размещать блоки здесь!"
+  chest-access: "&cВы не можете открывать сундуки здесь!"
+  itemdrop: "&cВы не можете выбрасывать предметы здесь!"
+  block-chat: "&cЧат заблокирован в этом регионе!"
+  exit: "&cВы не можете покинуть этот регион!"
+  creeper-explosion: "&cВзрывы криперов запрещены здесь!"
+
+# Информация о регионе
+info:
+  header: "&6=== Информация о регионе: &e{name} &6==="
+  owners: "&7Владельцы: &f{owners}"
+  members: "&7Участники: &f{members}"
+  priority: "&7Приоритет: &f{priority}"
+  world: "&7Мир: &f{world}"
+  size: "&7Размер: &f{size} блоков"
+  flags: "&7Флаги: &f{flags}"
+  volume: "&7Объем: &f{volume} блоков³"
+
+# Список регионов
+list:
+  header: "&6Ваши регионы (&e{count}&6):"
+  item: "&7- &e{name} &7(Владельцы: &f{owners}&7, Участники: &f{members}&7)"
+  empty: "&cУ вас нет регионов!"
+  page: "&7Страница &e{current}&7/&e{total}"
+
+# Визуальные эффекты
+visual:
+  boundaries-shown: "&aПоказываю границы регионов!"
+  boundaries-hidden: "&aСкрываю границы регионов!"
+  particles-enabled: "&aЧастицы границ включены!"
+  particles-disabled: "&cЧастицы границ выключены!"
+
+# Админские функции
+admin:
+  bypass-enabled: "&aОбход защиты включен!"
+  bypass-disabled: "&cОбход защиты выключен!"
+  reload-complete: "&aПлагин перезагружен успешно!"
+  wand-received: "&aВолшебная палочка получена!"
+
+# Уведомления о входе/выходе
+notifications:
+  entering: "&aВы входите в регион: &e{region}"
+  leaving: "&cВы покидаете регион: &e{region}"
+  in-region: "&7Текущий регион: &f{region}"
+  region-enter: "&aВы вошли в регион &e{name}"
+  region-exit: "&cВы вышли из региона &e{name}"
+  region-enter-owner: "&aВы вошли в свой регион &e{name}"
+  region-exit-owner: "&cВы вышли из своего региона &e{name}"
+  region-enter-member: "&aВы вошли в регион &e{name} (участник)"
+  region-exit-member: "&cВы вышли из региона &e{name} (участник)"
+
+# Сообщения об ошибках
+errors:
+  invalid-name: "&cНеверное имя региона! Используйте буквы, цифры, подчеркивания (3-16 символов)"
+  max-regions: "&cДостигнут лимит регионов: {max}"
+  overlap: "&cРегион пересекается с существующим регионом!"
+  invalid-size: "&cРазмер региона слишком мал или слишком велик!"
+  world-not-found: "&cМир не найден: {world}"
+  player-not-found: "&cИгрок не найден: {player}"
+  player-offline: "&cИгрок не в сети: {player}"
+  unknown-error: "&cПроизошла неизвестная ошибка!"
+
+# Экономика (если используется)
+economy:
+  insufficient-funds: "&cНедостаточно средств! Требуется: &e{amount}"
+  region-created-paid: "&aРегион создан! Стоимость: &e{amount}"
+  refund-received: "&aПолучен возврат: &e{amount}"
+
+# Система обновлений
+updater:
+  checking: "&aПроверяю обновления..."
+  no-updates: "&aПлагин обновлен до последней версии!"
+  update-available: "&6[RegionMC] &eДоступно обновление! &7{current} &8→ &a{latest}"
+  download-url: "&eСкачать: &b{url}"
+  changelog: "&eСписок изменений: &7{changelog}"
+  downloading: "&aСкачиваю обновление..."
+  downloaded: "&aОбновление успешно скачано!"
+  restart-required: "&aПерезагрузите сервер для применения обновления."
+  check-failed: "&cОшибка проверки обновлений: {error}"
+
+# Система перезагрузки
+reload:
+  started: "&aПерезагружаю RegionMC..."
+  configs: "&7- Конфигурации перезагружены"
+  languages: "&7- Языковые файлы перезагружены"
+  regions: "&7- Регионы перезагружены"
+  flags: "&7- Флаги перезагружены"
+  complete: "&aПерезагрузка завершена успешно!"
+
+# Система волшебной палочки
+wand:
+  received: "&aВолшебная палочка для выделения получена!"
+  instructions: "&7ЛКМ: Установить pos1 | ПКМ: Установить pos2"
+  selected: "&aПозиция установлена! Используйте &e/region claim <название> &aдля создания региона"
+
+# Шаблоны (если используются)
+templates:
+  applied: "&aШаблон '&e{template}&a' применен к '&e{region}&a'"
+  not-found: "&cШаблон не найден: {template}"
+
+# Система автоматического определения предметов
+auto-item-detection:
+  item-detected: "&a{item} обнаружен! Теперь вы можете использовать его для работы с регионами"
+  no-permission-item: "&cУ вас нет прав для использования этого предмета: {item}"
+  manual-creation-allowed: "&aВы можете создать этот предмет вручную"
+  manual-creation-denied: "&cРучное создание этого предмета отключено"
+
+# Палочка выделения
+selection-wand:
+  received: "&aПалочка выделения получена!"
+  instructions: "&7ЛКМ: Установить pos1 | ПКМ: Установить pos2 | Shift+ПКМ: Показать информацию"
+  no-permission: "&cУ вас нет прав для использования палочки выделения!"
+  manual-creation-allowed: "&aВы можете создать палочку выделения вручную"
+  manual-creation-denied: "&cРучное создание палочки выделения отключено"
+
+# Предмет проверки регионов
+selection-info:
+  received: "&aПредмет проверки регионов получен!"
+  instructions: "&7ПКМ по блоку для проверки информации о регионе"
+  no-permission: "&cУ вас нет прав для использования предмета проверки регионов!"
+  manual-creation-allowed: "&aВы можете создать предмет проверки регионов вручную"
+  manual-creation-denied: "&cРучное создание предмета проверки регионов отключено"
+  no-region-at-location: "&cВ этом месте нет региона!"
+  region-info-at-location: "&aРегион в этом месте: &e{region}"
+
+# Сообщения системы предметов
+items:
+  auto-detection-enabled: "&aАвтоматическое определение предметов включено"
+  auto-detection-disabled: "&cАвтоматическое определение предметов выключено"
+  permission-check-enabled: "&aПроверка прав для предметов включена"
+  permission-check-disabled: "&cПроверка прав для предметов выключена"
+  invalid-material: "&cНеверный материал предмета: {material}"
+  item-created: "&a{item} успешно создан!"
+  item-creation-failed: "&cНе удалось создать {item}"
+
+# Система блокировки времени
+time-lock:
+  enabled: "&aВремя заблокировано в регионе"
+  disabled: "&aВремя разблокировано в регионе"
+  day: "&aЗаблокировано на день"
+  night: "&aЗаблокировано на ночь"
+  fixed: "&aВремя зафиксировано"
+  denied: "&cИзменение времени запрещено"
+  info: "&7Режим времени: &f{mode}"
+
+# Система лимитов
+limits:
+  enabled: "&aLimits включены"
+  disabled: "&cLimits выключены"
+  unlimited: "&aБезлимитный доступ"
+  size-limit: "&aВаш лимит размера: &e{limit} блоков"
+  current-size: "&aТекущий размер: &e{size} блоков"
+  usage-percentage: "&aИспользовано лимита: &e{percentage}%"
+  exceeded: "&cЛимит размера превышен! Ваш лимит: &e{max}&c, текущий: &e{current}"
+
+# Информация о выделении позиций
+pos:
+  pos1-set: "&aПозиция 1 установлена в &e{x}&a, &e{y}&a, &e{z}&a"
+  pos2-set: "&aПозиция 2 установлена в &e{x}&a, &e{y}&a, &e{z}&a"
+  cleared: "&aПозиции очищены!"
+  status: "&6=== Статус выделения ==="
+  not-set: "&cНе установлена"
+  ready: "&aГотово к созданию региона!"
+  set-both: "&7Установите обе позиции для создания региона"
+
+# Быстрые действия
+quick-actions:
+  create-region: "&6Быстрые действия: &e[Создать регион] &7- /region claim <название>"
+  set-pos1: "&6Установите &ePos1 &6для завершения выделения"
+  set-pos2: "&6Установите &ePos2 &6для завершения выделения"
+
+# Расширение регионов (детальное)
+expand:
+  successful: "&aВыделение расширено на &e{blocks}&a блоков в направлении &e{direction}&a!"
+  no-permission: "&cУ вас нет прав для изменения этого региона!"
+  too-large: "&cРазмер региона будет слишком большим после расширения!"
+  limit-reached: "&cВаш лимит: &e{limit}&c блоков, новый размер: &e{size}"
+
+# Тихая установка позиций
+position:
+  set-silently: "&aПозиция обновлена без уведомления"
+
+# Сообщения о файлах
+file:
+  not-found: "&climit.yml не найден! Лимиты отключены."
+  loaded: "&aКонфигурация лимитов загружена"
+  error: "&cОшибка загрузки конфигурации: {error}"
+
+# Сообщения в консоль
+console:
+  limits-enabled: "[RegionMC] Лимиты включены в limit.yml (Enable: true)"
+  limits-disabled: "[RegionMC] Лимиты отключены в limit.yml (Enable: false)"
+  file-not-found: "[RegionMC] limit.yml не найден! Лимиты отключены."
+  error-reading: "[RegionMC] Ошибка чтения limit.yml: {error}"
+
+# Языковые настройки
+language:
+  loaded: "&aЯзыковой файл загружен: {language}"
+  reloaded: "&aЯзыковые файлы перезагружены"
+  not-found: "&cЯзыковой файл не найден: {language}"
+  default-loaded: "&aЗагружен язык по умолчанию: {language}"
+
+# Информация о выделении
+selection:
+  info: "&6=== Информация о выделении ==="
+  bounds: "&7Размеры: &f{width}×{height}×{length}"
+  min: "&7Минимум: &f{x}, {y}, {z}"
+  max: "&7Максимум: &f{x}, {y}, {z}"
+  volume: "&7Объем: &f{volume} блоков"
+  ready-create: "&a✓ Готово к созданию региона! Используйте &e/region claim <название>"
+  set-both: "&7Установите обе позиции для создания региона"
+
+# JSON сообщения (если используется)
+json:
+  click-to-copy: "&7Нажмите, чтобы скопировать координаты"
+  check-status: "&7Проверить статус выделения"
+  clear-positions: "&7Очистить обе позиции"
+  update-position: "&7Обновить позицию"
+  set-position: "&7Установить позицию"
+  create-region: "&7Создать регион"
+  show-help: "&7Показать справку"
+  expand-region: "&7Расширить регион"
+  copy-location: "&7Скопировать координаты"
+  run-command: "&7Выполнить команду: {command}"
+
+# Примеры команд
+example:
+  header: "&6=== RegionMC Примеры использования ==="
+  basic-commands: "&e📌 Базовые команды:"
+  basic-pos1: "&7• &f/rg pos1 &7- Установить первую позицию (где вы стоите)"
+  basic-pos2: "&7• &f/rg pos2 &7- Установить вторую позицию (где вы стоите)"
+  basic-claim: "&7• &f/rg claim <название> &7- Создать регион"
+
+  create-example: "&e📌 Пример создания региона:"
+  create-step1: "&7  &f1. &7Встаньте в одном углу и введите &f/rg pos1"
+  create-step2: "&7  &f2. &7Встаньте в противоположном углу и введите &f/rg pos2"
+  create-step3: "&7  &f3. &7Введите &f/rg claim mybase &7- создаст регион 'mybase'"
+
+  expand: "&e📌 Расширение региона:"
+  expand-up: "&7• &f/rg expand 10 up &7- Расширить на 10 блоков вверх"
+  expand-down: "&7• &f/rg expand 5 down &7- Расширить на 5 блоков вниз"
+  expand-north: "&7• &f/rg expand 8 north &7- Расширить на 8 блоков на север"
+  expand-south: "&7• &f/rg expand 8 south &7- Расширить на 8 блоков на юг"
+  expand-east: "&7• &f/rg expand 8 east &7- Расширить на 8 блоков на восток"
+  expand-west: "&7• &f/rg expand 8 west &7- Расширить на 8 блоков на запад"
+
+  member-management: "&e📌 Управление участниками:"
+  addmember: "&7• &f/rg addmember mybase Steve &7- Добавить Steve как участника"
+  removemember: "&7• &f/rg removemember mybase Steve &7- Удалить Steve из участников"
+  addowner: "&7• &f/rg addowner mybase Alex &7- Добавить Alex как владельца"
+  removeowner: "&7• &f/rg removeowner mybase Alex &7- Удалить Alex из владельцев"
+
+  flags: "&e📌 Флаги региона (time-lock):"
+  flag-day: "&7• &f/rg flag mybase time-lock day &7- Всегда день в регионе"
+  flag-night: "&7• &f/rg flag mybase time-lock night &7- Всегда ночь в регионе"
+  flag-allow: "&7• &f/rg flag mybase time-lock allow &7- Разрешить обычное время"
+  flag-deny: "&7• &f/rg flag mybase time-lock deny &7- Заморозить текущее время"
+
+  info-management: "&e📌 Информация и управление:"
+  list: "&7• &f/rg list &7- Список ваших регионов"
+  info: "&7• &f/rg info mybase &7- Информация о регионе"
+  priority: "&7• &f/rg priority mybase 100 &7- Установить приоритет 100"
+  delete: "&7• &f/rg delete mybase &7- Удалить регион"
+  show: "&7• &f/rg show mybase &7- Показать границы региона"
+  hide: "&7• &f/rg hide mybase &7- Скрыть границы региона"
+
+  additional: "&e📌 Дополнительно:"
+  wand: "&7• &f/rg wand &7- Получить палочку выделения"
+  limit: "&7• &f/rg limit &7- Информация о лимитах регионов"
+  reload: "&7• &f/rg reload &7- Перезагрузить плагин (требуются права админа)"
+
+  tip: "&7💡 &7Совет: Нажимайте на команды в чате, чтобы автоматически вставить их!"
+
+# Система уведомлений
+notifier:
+  test-started: "&eТест уведомлений запущен..."
+  test-completed: "&aТест уведомлений завершен!"
+  message-sent: "&aСообщение отправлено!"
+  usage: "&cИспользование: /region notifier message <текст>"
+
+help:
+  header: "&6=== RegionMC Помощь ==="
+  notifier-test: "&7/region notifier test &f- Тест уведомлений"
+  notifier-message: "&7/region notifier message <текст> &f- Отправить сообщение"

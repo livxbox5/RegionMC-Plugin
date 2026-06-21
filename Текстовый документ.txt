@@ -1,0 +1,126 @@
+1. Overrides
+
+passthrough – отключает защиту региона полностью
+
+nonplayer-protection-domains – для взаимодействия механизмов через границы
+========================================================================================
+2. Protection-Related
+damage-animals – урон животным
+ride – возможность садиться на транспорт/животных
+respawn-anchors – использование якорей возрождения
+tnt – контроль TNT отдельно
+========================================================================================
+
+
+vehicle-place / vehicle-destroy – установка/разрушение транспорта
+
+lighter – использование огнива
+
+block-trampling – вытаптывание грядок
+
+frosted-ice-form – создание льда чарами "Ледоход"
+
+item-frame-rotation – вращение предметов в рамках
+
+firework-damage – урон от фейерверков
+
+use-anvil – использование наковальни
+
+use-dripleaf – использование дриплифа
+
+3. Mobs, Fire, and Explosions
+
+ghast-fireball – урон от огненных шаров гастов
+
+other-explosion – прочие взрывы (кровати в Аду)
+
+snowman-trails – следы снежных големов
+
+ravager-grief – разрушения от разорителей
+
+deny-spawn – список запрещённых к спавну мобов
+
+entity-painting-destroy – разрушение картин мобами
+
+entity-item-frame-destroy – разрушение рамок мобами
+
+wither-damage – урон от Иссушителя
+
+4. Natural Events
+
+lava-fire – поджигание от лавы
+
+lightning – удары молний
+
+water-flow / lava-flow – течение воды/лавы
+
+snow-fall / snow-melt – снегопад/таяние снега
+
+ice-form / ice-melt – образование/таяние льда
+
+frosted-ice-melt – таяние льда от "Ледохода"
+
+mushroom-growth – рост грибов
+
+mycelium-spread – распространение мицелия
+
+vine-growth – рост лиан и ламинарии
+
+rock-growth – рост камней (дрипстоун)
+
+sculk-growth – рост скалка
+
+crop-growth – рост урожая
+
+soil-dry – высыхание почвы
+
+coral-fade – обесцвечивание кораллов
+
+copper-fade – окисление меди
+
+5. Movement
+
+exit-via-teleport – разрешение выхода через телепорт при запрете обычного
+
+exit-override – всегда разрешать выход
+
+entry-deny-message / exit-deny-message – кастомные сообщения при запрете входа/выхода
+
+notify-enter / notify-leave – уведомления для админов
+
+greeting-title / farewell-title – титулы (Title) при входе/выходе
+
+teleport – точка телепорта по команде /region teleport
+
+spawn – точка возрождения
+
+teleport-message – сообщение при телепорте
+
+6. Map Making
+
+deny-message – общее сообщение при запрете действий
+
+invincible – неуязвимость
+
+game-mode – принудительный режим игры
+
+weather-lock – фиксация погоды
+
+natural-health-regen – естественная регенерация
+
+natural-hunger-drain – естественная потеря голода
+
+heal-delay / heal-amount / heal-min-health / heal-max-health – настройки лечения
+
+feed-delay / feed-amount / feed-min-hunger / feed-max-hunger – настройки питания
+
+allowed-cmds – список разрешённых команд (аналог blocked-cmds наоборот)
+
+7. Miscellaneous
+
+send-chat – разрешение отправлять сообщения в чат
+
+receive-chat – разрешение получать сообщения чата
+
+potion-splash – эффекты от взрывных зелий
+
