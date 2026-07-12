@@ -1,0 +1,52 @@
+# Конфигурация цветов и форматов Поддерживает плагина RegionMC
+
+#===========================================================
+# Стандартные цвета Minecraft (& коды)
+# Знак <&>
+# Пример
+minecraft-colors:
+  black: "&0"
+  dark-blue: "&1"
+  dark-green: "&2"
+
+# Примеры использования MiniMessage форматов
+# https://webui.advntr.dev/
+minimessage-examples:
+  # Основные теги MiniMessage
+  basic-colors:
+    - "<red>Красный текст</red>"
+    - "<green>Зеленый текст</green>"
+    - "<blue>Синий текст</blue>"
+    - "<yellow>Желтый текст</yellow>"
+    - "<gold>Золотой текст</gold>"
+    - "<aqua>Бирюзовый текст</aqua>"
+    - "<white>Белый текст</white>"
+    - "<black>Черный текст</black>"
+    - "<dark_red>Темно-красный текст</dark_red>"
+    - "<dark_green>Темно-зеленый текст</dark_green>"
+    - "<dark_blue>Темно-синий текст</dark_blue>"
+
+  # Форматирование
+  # https://webui.advntr.dev/
+  formatting:
+    - "<bold>Жирный текст</bold>"
+    - "<italic>Курсивный текст</italic>"
+    - "<underlined>Подчеркнутый текст</underlined>"
+    - "<strikethrough>Зачеркнутый текст</strikethrough>"
+    - "<obfuscated>Зашифрованный текст</obfuscated>"
+
+  # Градиенты
+  # https://csscolor.ru/
+  gradients:
+    - "<gradient:red:blue>Градиент от красного к синему</gradient>"
+    - "<gradient:#FF0000:#00FF00:#0000FF>Многоцветный градиент</gradient>"
+    - "<gradient:gold:yellow>Золотой градиент</gradient>"
+  # HEX цвета
+  # https://csscolor.ru/
+  hex-colors:
+    - "<#FF0000>Красный HEX</#FF0000>"
+    - "<#00FF00>Зеленый HEX</#00FF00>"
+    - "<#0000FF>Синий HEX</#0000FF>"
+    - "<#FFA500>Оранжевый HEX</#FFA500>"
+
+#====================================================================================================

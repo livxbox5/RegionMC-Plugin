@@ -1,0 +1,379 @@
+# =============================================
+# Основные настройки системы регионов
+# =============================================
+
+# =============================================
+# RegionMC Main Configuration
+# Version: 1.0.0
+# =============================================
+
+version: "1.0.0"
+config-version: 3
+
+# =============================================
+# Администраторы плагина
+# =============================================
+admin-user:
+  - "KillerYTuber1"
+  - "Neonix98"
+
+# =============================================
+# Основные настройки системы регионов
+# =============================================
+
+regions:
+  # Основные настройки
+  max-regions-per-player: 5
+  allow-overlap: false
+  default-priority: 0
+
+  # Настройки именования
+  naming:
+    blocked-names:
+      - "admin"
+      - "global"
+      - "world"
+      - "server"
+      - "owner"
+      - "region"
+      - "mine"
+      - "protected"
+    min-length: 3
+    max-length: 16
+    allow-special-chars: true
+    allow-spaces: false
+
+  # Флаги по умолчанию
+  default-flags:
+    # Основные флаги защиты
+    build: "deny"
+    break: "deny"
+    place: "deny"
+    interact: "allow"
+    use-items: "allow"
+    pvp: "allow"
+    mob-spawning: "allow"
+
+    # Флаги для сущностей
+    mob-damage: "allow"
+    animal-spawning: "allow"
+    monster-spawning: "allow"
+
+    # Флаги для окружающей среды
+    fire-spread: "deny"
+    leaf-decay: "allow"
+    grass-growth: "allow"
+    mushroom-growth: "allow"
+    vine-growth: "allow"
+    crop-growth: "allow"
+
+    # Флаги для физики
+    pistons: "allow"
+    gravity: "allow"
+    explosions: "deny"
+    creeper-explosion: "deny"
+    tnt-explosion: "deny"
+
+    # Флаги для игроков
+    entry: "allow"
+    exit: "allow"
+    enter-notify: 'deny'
+    exit-notify: 'deny'
+    sleep: "allow"
+    item-drop: "allow"
+    item-pickup: "allow"
+    exp-drops: "allow"
+    fall-damage: "allow"
+
+    # Флаги для контейнеров
+    chest-access: "allow"
+    enderchest: "allow"
+    furnace-access: "allow"
+    brewing-access: "allow"
+    beacon-access: "allow"
+
+    # Флаги для времени
+    time-lock: "allow"
+
+    # Флаги для команд
+    blockcmd: false
+
+  # Настройки защиты
+  protection:
+    enabled: true
+    explosion-protection: true
+    fire-protection: true
+    pvp-protection: false
+    monster-protection: true
+    animal-protection: false
+    environmental-protection: true
+
+  # Настройки визуализации
+  visualization:
+    show-border-particles: true
+    border-show-duration: 10
+    particle-color: "0,255,0"
+    particle-type: "VILLAGER_HAPPY"
+    particle-count: 5
+    highlight-on-select: true
+    show-info-on-click: true
+
+  # Настройки производительности
+  performance:
+    check-interval: 20
+    enable-caching: true
+    cache-size: 1000
+    async-loading: true
+    region-check-limit: 100
+    world-border-check: true
+
+  # Настройки команд
+  commands:
+    aliases:
+      - "region"
+      - "rg"
+      - "regionmc"
+    enable-aliases: true
+    auto-complete: true
+    tab-complete-delay: 1
+    command-cooldown: 0
+
+  # Настройки сообщений
+  messages:
+    prefix: "&6[RegionMC]&f"
+    show-entry-messages: true
+    show-exit-messages: true
+    use-action-bar: true
+    broadcast-events: false
+    notification-duration: 5
+    color-enabled: true
+
+  # Настройки безопасности
+  security:
+    max-members-per-region: 50
+    max-owners-per-region: 5
+    command-spam-protection: true
+    spam-threshold: 5
+    spam-cooldown: 5
+    protection-bypass-permission: "regionmc.admin"
+
+  # Настройки предметов для выделения
+  selection-tools:
+    selection-wand:
+      enabled: true
+      material: "WOODEN_AXE"
+      name: "&6Топор для выделения"
+      lore:
+        - "&7ЛКМ - установить позицию 1"
+        - "&7ПКМ - установить позицию 2"
+        - "&7Shift + ПКМ - проверить регион"
+      durability: -1
+
+    selection-info:
+      enabled: true
+      material: "STICK"
+      name: "&bПроверка регионов"
+      lore:
+        - "&7ЛКМ по блоку - проверить регион"
+        - "&7ПКМ по блоку - показать информацию"
+        - "&7Shift + ПКМ - показать границы"
+      durability: -1
+
+  # Настройки экспорта/импорта
+  export-import:
+    enable-export: true
+    enable-import: true
+    backup-on-import: true
+    export-format: "yaml"
+
+  # Настройки для PvP регионов
+  pvp-regions:
+    enable-pvp-arenas: true
+    pvp-arena-min-size: 100
+    pvp-arena-max-size: 1000
+    pvp-auto-reset: false
+    pvp-reset-interval: 300
+
+  # Настройки для спавна
+  spawn-protection:
+    protect-world-spawn: true
+    spawn-protection-radius: 16
+    spawn-build-permission: "regionmc.spawn.build"
+
+  # Настройки для мобов
+  mob-control:
+    prevent-hostile-spawn: false
+    prevent-animal-spawn: false
+    mob-spawn-limit: 20
+    mob-spawn-radius: 32
+
+  # Настройки для Redstone
+  redstone-control:
+    allow-redstone: true
+    redstone-limit: 100
+    prevent-redstone-clocks: true
+    piston-protection: true
+
+  # Настройки для воды/лавы
+  liquid-control:
+    water-flow: "ALLOW"
+    lava-flow: "DENY"
+    prevent-liquid-damage: true
+    liquid-spread-limit: 100
+
+  # Настройки для ферм
+  farm-protection:
+    protect-crops: true
+    prevent-trampling: true
+    auto-replant: false
+    growth-boost: 1.0
+
+  # Настройки для порталов
+  portal-control:
+    allow-nether-portals: true
+    allow-end-portals: true
+    portal-creation-permission: "regionmc.portal.create"
+    portal-teleport-permission: "regionmc.portal.use"
+
+# ========== НАСТРОЙКИ ДЛЯ WORLDS ==========
+worlds:
+  world-settings:
+    world:
+      enabled: true
+      allow-region-creation: true
+      default-global-region: true
+    world_nether:
+      enabled: true
+      allow-region-creation: true
+      default-global-region: true
+    world_the_end:
+      enabled: true
+      allow-region-creation: true
+      default-global-region: true
+
+  general:
+    auto-create-global-regions: true
+    global-region-priority: -100
+    world-border-integration: true
+    dimension-specific-flags: true
+
+# ========== НАСТРОЙКИ ДЛЯ БАЙПАСА ==========
+bypass:
+  permissions:
+    regionmc.admin:
+      can-bypass-all: true
+      can-modify-all: true
+      can-delete-all: true
+    regionmc.bypass:
+      can-bypass-protection: true
+      can-build-anywhere: true
+      can-break-anywhere: true
+    regionmc.mod:
+      can-modify-any: true
+      can-add-members: true
+
+  groups:
+    admins:
+      permissions:
+        - "regionmc.admin"
+        - "regionmc.bypass"
+    moderators:
+      permissions:
+        - "regionmc.mod"
+        - "regionmc.bypass"
+
+# ========== НАСТРОЙКИ ДЛЯ СОБЫТИЙ ==========
+events:
+  handled-events:
+    block:
+      - "BLOCK_BREAK"
+      - "BLOCK_PLACE"
+      - "BLOCK_INTERACT"
+      - "BLOCK_IGNITE"
+    entity:
+      - "ENTITY_DAMAGE"
+      - "ENTITY_EXPLODE"
+      - "ENTITY_SPAWN"
+      - "ENTITY_PICKUP_ITEM"
+    player:
+      - "PLAYER_MOVE"
+      - "PLAYER_INTERACT"
+      - "PLAYER_COMMAND"
+      - "PLAYER_TELEPORT"
+    inventory:
+      - "INVENTORY_OPEN"
+      - "INVENTORY_CLICK"
+      - "INVENTORY_CLOSE"
+
+  event-priority: "HIGH"
+  ignore-cancelled: true
+
+# ========== НАСТРОЙКИ ДЛЯ ДАТАБЕЙСА ==========
+database:
+  type: "sqlite"
+
+  sqlite:
+    filename: "regions.db"
+    backup-on-save: true
+    backup-count: 5
+
+  mysql:
+    host: "localhost"
+    port: 3306
+    database: "regionmc"
+    username: "root"
+    password: ""
+    params: "?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+    pool:
+      max-pool-size: 10
+      min-idle-connections: 2
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+
+  general:
+    auto-backup: true
+    backup-interval: 3600
+    compress-backups: true
+    max-backup-size: 100
+
+# ========== НАСТРОЙКИ ДЛЯ ЛОГГИРОВАНИЯ ==========
+logging:
+  levels:
+    debug: false
+    info: true
+    warning: true
+    error: true
+
+  log-events:
+    region-creation: true
+    region-deletion: true
+    region-modification: true
+    protection-violations: true
+    command-usage: true
+
+  log-files:
+    max-size: 10
+    max-files: 5
+    compress-old: true
+
+# ========== НАСТРОЙКИ ДЛЯ API ==========
+api:
+  enable-api: true
+  api-version: "1.0"
+
+  webhooks:
+    enabled: false
+    url: ""
+    events:
+      - "REGION_CREATED"
+      - "REGION_DELETED"
+      - "PROTECTION_VIOLATION"
+
+  rest-api:
+    enabled: false
+    port: 8080
+    authentication-required: true
+    allowed-ips:
+      - "127.0.0.1"
+      - "localhost"

@@ -1,0 +1,457 @@
+# RegionMC English Language File
+# Complete and organized version
+
+prefix: "&6[RegionMC]&r "
+no-prefix: "&6[RegionMC]&r "
+
+# Basic commands
+player-only: "&cThis command can only be used by players!"
+unknown-command: "&cUnknown command!"
+no-permission: "&cYou don't have permission to use this command!"
+invalid-number: "&cInvalid number: {input}"
+
+# Command usage
+commands:
+  no-permission: "&cYou don't have permission to use this command!"
+  usage: "&eUsage: &7{usage}"
+  claim: "&eUsage: &7/region claim <name>"
+  delete: "&eUsage: &7/region delete <name>"
+  info: "&eUsage: &7/region info <name>"
+  list: "&eUsage: &7/region list [page]"
+  flag: "&eUsage: &7/region flag <region> <flag> <value>"
+  addmember: "&eUsage: &7/region addmember <region> <player>"
+  addowner: "&eUsage: &7/region addowner <region> <player>"
+  removemember: "&eUsage: &7/region removemember <region> <player>"
+  removeowner: "&eUsage: &7/region removeowner <region> <player>"
+  priority: "&eUsage: &7/region priority <region> <number>"
+  expand: "&eUsage: &7/region expand <blocks> [up|down|north|south|east|west]"
+  wand: "&eUsage: &7/region wand"
+  bypass: "&eUsage: &7/region bypass"
+  reload:
+    use: "&eUsage: &7/region reload"
+    start: "&aReloading RegionMC..."
+    success: "&aPlugin reloaded successfully!"
+    error: "&cFailed to reload RegionMC!"
+
+# Region creation & management
+region:
+  not-found: "&cRegion '&e{name}&c' not found!"
+  exists: "&cRegion '&e{name}&c' already exists!"
+  created: "&aRegion '&e{name}&a' created successfully!"
+  deleted: "&aRegion '&e{name}&a' deleted successfully!"
+  renamed: "&aRegion renamed to '&e{name}&a'!"
+  no-regions: "&cYou don't have any regions!"
+  enter: "&aYou entered region &e{name}"
+  exit: "&cYou left region &e{name}"
+  enter-owner: "&aYou entered your region &e{name}"
+  exit-owner: "&cYou left your region &e{name}"
+  enter-member: "&aYou entered region &e{name} (member)"
+  exit-member: "&cYou left region &e{name} (member)"
+
+  create:
+    invalid-name: "&cInvalid region name! Use letters, numbers, underscores (3-16 chars)"
+
+  member:
+    add:
+      success: "&aPlayer '&e{0}&a' added as member to region '&e{1}&a'"
+      failed: "&cFailed to add player '&e{0}&c' to region '&e{1}&c'"
+    remove:
+      success: "&aPlayer '&e{0}&a' removed from region '&e{1}&a'"
+      failed: "&cFailed to remove player '&e{0}&c' from region '&e{1}&c'"
+
+  owner:
+    add:
+      success: "&aPlayer '&e{0}&a' added as owner to region '&e{1}&a'"
+      failed: "&cFailed to add player '&e{0}&c' as owner of region '&e{1}&c'"
+    remove:
+      success: "&aPlayer '&e{0}&a' removed as owner from region '&e{1}&a'"
+      failed: "&cFailed to remove player '&e{0}&c' as owner of region '&e{1}&c'"
+
+  priority-set: "&aPriority of region '&e{0}&a' set to &e{1}"
+  priority-error: "&cFailed to set region priority!"
+  different-worlds: "&cPositions are in different worlds!"
+
+  # Selection
+  pos1-set: "&aPosition 1 set at &e{x}&a, &e{y}&a, &e{z}&a"
+  pos2-set: "&aPosition 2 set at &e{x}&a, &e{y}&a, &e{z}&a"
+  selection-cleared: "&aSelection cleared!"
+  no-selection: "&cNo positions selected! Use &e/region pos1 &cand &e/region pos2"
+
+  # Members (old format)
+  member-added: "&aPlayer '&e{player}&a' added as member to '&e{region}&a'"
+  member-removed: "&aPlayer '&e{player}&a' removed from '&e{region}&a'"
+  owner-added: "&aPlayer '&e{player}&a' added as owner to '&e{region}&a'"
+  owner-removed: "&aPlayer '&e{player}&a' removed as owner from '&e{region}&a'"
+
+  # Flags
+  flag-set: "&aFlag '&e{flag}&a' set to '&e{value}&a' for '&e{region}&a'"
+  flag-removed: "&aFlag '&e{flag}&a' removed from '&e{region}&a'"
+
+  # Expansion system
+  expand:
+    success: "&aRegion expanded by &e{0}&a blocks in direction: &e{1}"
+    auto-direction: "&6Automatically determined direction: &e{0}"
+    failed: "&cFailed to expand region"
+    no-selection: "&cNo region selected! Use &e/region pos1 &cand &e/region pos2 &cto select positions"
+    direction-up: "up"
+    direction-down: "down"
+    direction-north: "north"
+    direction-south: "south"
+    direction-east: "east"
+    direction-west: "west"
+  notify:
+    enter: "&ePlayer &6{1} &eentered your region &6{0}"
+    exit: "&ePlayer &6{1} &eleaved your region &6{0}"
+
+# Flag descriptions
+flags:
+  break: "Allow or deny breaking blocks"
+  build: "Allow or deny placing blocks"
+  interact: "Allow or deny interacting with objects"
+  pvp: "Allow or deny PvP combat"
+  entry: "Allow or deny entering the region"
+  exit: "Allow or deny exiting the region"
+  use: "Allow or deny using items"
+  enderchest: "Allow or deny using ender chests"
+  mob-spawning: "Allow or deny mob spawning"
+  ender-dragon-grief: "Allow or deny ender dragon block damage"
+  fire-spread: "Allow or deny fire spread"
+  explosions: "Allow or deny explosions"
+  enderman-grief: "Allow or deny endermen picking up blocks"
+  use-items: "Allow or deny using items"
+  time-lock: "Time lock (day/night/deny)"
+  autosave: "Region autosave"
+  greeting: "Greeting message"
+  farewell: "Farewell message"
+  damage-animals: "Allow or deny damaging friendly animals"
+  ride: "Allow or deny riding vehicles or animals"
+  respawn-anchors: "Allow or deny using respawn anchors"
+  tnt: "Allow or deny TNT detonation and block damage"
+  mob-damage: "Allow or deny damage from mobs"
+  ender-dragon-damage: "Allow or deny ender dragon damage"
+  place: "Allow or deny placing blocks"
+  chest-access: "Allow or deny chest access"
+  item-drop: "Allow or deny dropping items"
+  item-pickup: "Allow or deny picking up items"
+  fall-damage: "Allow or deny fall damage"
+  leaf-decay: "Allow or deny leaf decay"
+  grass-growth: "Allow or deny grass growth"
+  pistons: "Allow or deny piston movement"
+  sleep: "Allow or deny sleeping in beds"
+  blockcmd: "Block commands in region"
+  block-chat: "Block chat in region"
+
+# Protection messages
+protection:
+  denied: "&cAction denied in this area!"
+  break: "&cYou cannot break blocks here!"
+  build: "&cYou cannot build here!"
+  interact: "&cYou cannot interact here!"
+  use: "&cYou cannot use items here!"
+  pvp: "&cPvP is disabled here!"
+  entry: "&cYou cannot enter this region!"
+  enderchest: "&cYou cannot use ender chests here!"
+  container: "&cYou cannot access containers here!"
+  door: "&cYou cannot use doors here!"
+  mob-spawning: "&cMob spawning is disabled here!"
+  ender-dragon-grief: "&cEnder dragon griefing is disabled here!"
+  fire-spread: "&cFire spread is disabled here!"
+  explosions: "&cExplosions are disabled here!"
+  enderman-grief: "&cEnderman griefing is disabled here!"
+  use-items: "&cItem usage is disabled here!"
+  command: "&cYou cannot use commands here!"
+  time-change: "&cTime change denied in this region!"
+  greeting: "&aWelcome to region: &e{region}"
+  farewell: "&cYou left region: &e{region}"
+  damage-animals: "&cYou cannot damage animals here!"
+  ride: "&cYou cannot ride vehicles or animals here!"
+  respawn-anchors: "&cYou cannot use respawn anchors here!"
+  tnt: "&cYou cannot place TNT in this region!"
+  tnt-place: "&cYou cannot place TNT in this region!"
+  tnt-explode: "&cTNT explosion is blocked in this region!"
+  mob-damage: "&cYou cannot take damage from mobs here!"
+  ender-dragon-damage: "&cEnder dragon cannot deal damage here!"
+  place: "&cYou cannot place blocks here!"
+  chest-access: "&cYou cannot open chests here!"
+  itemdrop: "&cYou cannot drop items here!"
+  block-chat: "&cChat is blocked in this region!"
+  exit: "&cYou cannot leave this region!"
+  creeper-explosion: "&cCreeper explosions are disabled here!"
+
+# Region information
+info:
+  header: "&6=== Region Info: &e{name} &6==="
+  owners: "&7Owners: &f{owners}"
+  members: "&7Members: &f{members}"
+  priority: "&7Priority: &f{priority}"
+  world: "&7World: &f{world}"
+  size: "&7Size: &f{size} blocks"
+  flags: "&7Flags: &f{flags}"
+  volume: "&7Volume: &f{volume} blocks³"
+
+# Region list
+list:
+  header: "&6Your regions (&e{count}&6):"
+  item: "&7- &e{name} &7(Owners: &f{owners}&7, Members: &f{members}&7)"
+  empty: "&cYou don't have any regions!"
+  page: "&7Page &e{current}&7/&e{total}"
+
+# Visual effects
+visual:
+  boundaries-shown: "&aShowing region boundaries!"
+  boundaries-hidden: "&aHiding region boundaries!"
+  particles-enabled: "&aBoundary particles enabled!"
+  particles-disabled: "&cBoundary particles disabled!"
+
+# Admin features
+admin:
+  bypass-enabled: "&aProtection bypass enabled!"
+  bypass-disabled: "&cProtection bypass disabled!"
+  reload-complete: "&aPlugin reloaded successfully!"
+  wand-received: "&aRegion wand received!"
+
+# Region enter/leave notifications
+notifications:
+  entering: "&aEntering region: &e{region}"
+  leaving: "&cLeaving region: &e{region}"
+  in-region: "&7Current region: &f{region}"
+  region-enter: "&aYou entered region &e{name}"
+  region-exit: "&cYou left region &e{name}"
+  region-enter-owner: "&aYou entered your region &e{name}"
+  region-exit-owner: "&cYou left your region &e{name}"
+  region-enter-member: "&aYou entered region &e{name} (member)"
+  region-exit-member: "&cYou left region &e{name} (member)"
+
+# Error messages
+errors:
+  invalid-name: "&cInvalid region name! Use letters, numbers, underscores (3-16 chars)"
+  max-regions: "&cMaximum regions reached: {max}"
+  overlap: "&cRegion overlaps with existing region!"
+  invalid-size: "&cRegion size is too small or too large!"
+  world-not-found: "&cWorld not found: {world}"
+  player-not-found: "&cPlayer not found: {player}"
+  player-offline: "&cPlayer is offline: {player}"
+  unknown-error: "&cAn unknown error occurred!"
+
+# Economy (if used)
+economy:
+  insufficient-funds: "&cInsufficient funds! Required: &e{amount}"
+  region-created-paid: "&aRegion created! Cost: &e{amount}"
+  refund-received: "&aRefund received: &e{amount}"
+
+# Update system
+updater:
+  checking: "&aChecking for updates..."
+  no-updates: "&aPlugin is up to date!"
+  update-available: "&6[RegionMC] &eUpdate available! &7{current} &8→ &a{latest}"
+  download-url: "&eDownload: &b{url}"
+  changelog: "&eChangelog: &7{changelog}"
+  downloading: "&aDownloading update..."
+  downloaded: "&aUpdate downloaded successfully!"
+  restart-required: "&aPlease restart the server to apply the update."
+  check-failed: "&cUpdate check failed: {error}"
+
+# Reload system
+reload:
+  started: "&aReloading RegionMC..."
+  configs: "&7- Configurations reloaded"
+  languages: "&7- Language files reloaded"
+  regions: "&7- Regions reloaded"
+  flags: "&7- Flags reloaded"
+  complete: "&aReload completed successfully!"
+
+# Wand system
+wand:
+  received: "&aRegion selection wand received!"
+  instructions: "&7Left-click: Set pos1 | Right-click: Set pos2"
+  selected: "&aPosition selected! Use &e/region claim <name> &ato create region"
+
+# Templates (if used)
+templates:
+  applied: "&aTemplate '&e{template}&a' applied to '&e{region}&a'"
+  not-found: "&cTemplate not found: {template}"
+
+# Auto item detection system
+auto-item-detection:
+  item-detected: "&a{item} detected! You can now use it for region operations"
+  no-permission-item: "&cYou don't have permission to use this item: {item}"
+  manual-creation-allowed: "&aYou can create this item manually"
+  manual-creation-denied: "&cManual creation of this item is disabled"
+
+# Selection wand
+selection-wand:
+  received: "&aSelection wand received!"
+  instructions: "&7Left-click: Set pos1 | Right-click: Set pos2 | Shift+Right-click: Show info"
+  no-permission: "&cYou don't have permission to use the selection wand!"
+  manual-creation-allowed: "&aYou can create selection wand manually"
+  manual-creation-denied: "&cManual creation of selection wand is disabled"
+
+# Selection info tool
+selection-info:
+  received: "&aRegion info tool received!"
+  instructions: "&7Right-click on block to check region information"
+  no-permission: "&cYou don't have permission to use the region info tool!"
+  manual-creation-allowed: "&aYou can create region info tool manually"
+  manual-creation-denied: "&cManual creation of region info tool is disabled"
+  no-region-at-location: "&cNo region at this location!"
+  region-info-at-location: "&aRegion at this location: &e{region}"
+
+# Item system messages
+items:
+  auto-detection-enabled: "&aAuto item detection is enabled"
+  auto-detection-disabled: "&cAuto item detection is disabled"
+  permission-check-enabled: "&aPermission check for items is enabled"
+  permission-check-disabled: "&cPermission check for items is disabled"
+  invalid-material: "&cInvalid item material: {material}"
+  item-created: "&a{item} created successfully!"
+  item-creation-failed: "&cFailed to create {item}"
+
+# Limit system messages
+limits:
+  enabled: "&aLimits are enabled"
+  disabled: "&cLimits are disabled"
+  unlimited: "&aUnlimited access"
+  size-limit: "&aYour size limit: &e{limit} blocks"
+  current-size: "&aCurrent size: &e{size} blocks"
+  usage-percentage: "&aLimit usage: &e{percentage}%"
+  exceeded: "&cSize limit exceeded! Your limit: &e{max}&c, current: &e{current}"
+
+# Position selection info
+pos:
+  pos1-set: "&aPosition 1 set at &e{x}&a, &e{y}&a, &e{z}&a"
+  pos2-set: "&aPosition 2 set at &e{x}&a, &e{y}&a, &e{z}&a"
+  cleared: "&aPositions cleared!"
+  status: "&6=== Selection Status ==="
+  not-set: "&cNot set"
+  ready: "&aReady to create region!"
+  set-both: "&7Set both positions to create a region"
+
+# Quick actions
+quick-actions:
+  create-region: "&6Quick Actions: &e[Create Region] &7- /region claim <name>"
+  set-pos1: "&6Set &ePos1 &6to complete selection"
+  set-pos2: "&6Set &ePos2 &6to complete selection"
+
+# Region expansion (detailed)
+expand:
+  successful: "&aSelection expanded by &e{blocks}&a blocks in direction &e{direction}&a!"
+  no-permission: "&cYou don't have permission to modify this region!"
+  too-large: "&cRegion size would be too large after expansion!"
+  limit-reached: "&cYour limit: &e{limit}&c blocks, new size: &e{size}"
+
+# Silent position setting
+position:
+  set-silently: "&aPosition updated silently"
+
+# File related messages
+file:
+  not-found: "&climit.yml not found! Limits disabled."
+  loaded: "&aLimits configuration loaded"
+  error: "&cError loading configuration: {error}"
+
+# Console messages
+console:
+  limits-enabled: "[RegionMC] Limits enabled in limit.yml (Enable: true)"
+  limits-disabled: "[RegionMC] Limits disabled in limit.yml (Enable: false)"
+  file-not-found: "[RegionMC] limit.yml not found! Limits disabled."
+  error-reading: "[RegionMC] Error reading limit.yml: {error}"
+
+# Time Lock System
+time-lock:
+  enabled: "&aTime locked in region"
+  disabled: "&aTime unlocked in region"
+  day: "&aLocked to day"
+  night: "&aLocked to night"
+  fixed: "&aTime fixed"
+  denied: "&cTime change denied"
+  info: "&7Time mode: &f{mode}"
+
+# Language system
+language:
+  loaded: "&aLanguage file loaded: {language}"
+  reloaded: "&aLanguage files reloaded"
+  not-found: "&cLanguage file not found: {language}"
+  default-loaded: "&aDefault language loaded: {language}"
+
+# Selection bounds (for WandListener)
+selection:
+  info: "&6=== Selection Information ==="
+  bounds: "&7Bounds: &f{width}×{height}×{length}"
+  min: "&7Minimum: &f{x}, {y}, {z}"
+  max: "&7Maximum: &f{x}, {y}, {z}"
+  volume: "&7Volume: &f{volume} blocks"
+  ready-create: "&a✓ Ready to create region! Use &e/region claim <name>"
+  set-both: "&7Set both positions to create a region"
+
+# JsonMessageUtil (if used)
+json:
+  click-to-copy: "&7Click to copy location"
+  check-status: "&7Check selection status"
+  clear-positions: "&7Clear both positions"
+  update-position: "&7Update position"
+  set-position: "&7Set position"
+  create-region: "&7Create region"
+  show-help: "&7Show help"
+  expand-region: "&7Expand region"
+  copy-location: "&7Copy location to clipboard"
+  run-command: "&7Run command: {command}"
+
+# Example command
+example:
+  header: "&6=== RegionMC Usage Examples ==="
+  basic-commands: "&e📌 Basic Commands:"
+  basic-pos1: "&7• &f/rg pos1 &7- Set first position (where you stand)"
+  basic-pos2: "&7• &f/rg pos2 &7- Set second position (where you stand)"
+  basic-claim: "&7• &f/rg claim <name> &7- Create a region"
+
+  create-example: "&e📌 Region Creation Example:"
+  create-step1: "&7  &f1. &7Stand in one corner and type &f/rg pos1"
+  create-step2: "&7  &f2. &7Stand in opposite corner and type &f/rg pos2"
+  create-step3: "&7  &f3. &7Type &f/rg claim mybase &7- creates region 'mybase'"
+
+  expand: "&e📌 Region Expansion:"
+  expand-up: "&7• &f/rg expand 10 up &7- Expand 10 blocks upward"
+  expand-down: "&7• &f/rg expand 5 down &7- Expand 5 blocks downward"
+  expand-north: "&7• &f/rg expand 8 north &7- Expand 8 blocks north"
+  expand-south: "&7• &f/rg expand 8 south &7- Expand 8 blocks south"
+  expand-east: "&7• &f/rg expand 8 east &7- Expand 8 blocks east"
+  expand-west: "&7• &f/rg expand 8 west &7- Expand 8 blocks west"
+
+  member-management: "&e📌 Member Management:"
+  addmember: "&7• &f/rg addmember mybase Steve &7- Add Steve as member"
+  removemember: "&7• &f/rg removemember mybase Steve &7- Remove Steve from members"
+  addowner: "&7• &f/rg addowner mybase Alex &7- Add Alex as owner"
+  removeowner: "&7• &f/rg removeowner mybase Alex &7- Remove Alex from owners"
+
+  flags: "&e📌 Region Flags (time-lock):"
+  flag-day: "&7• &f/rg flag mybase time-lock day &7- Always day in region"
+  flag-night: "&7• &f/rg flag mybase time-lock night &7- Always night in region"
+  flag-allow: "&7• &f/rg flag mybase time-lock allow &7- Allow normal time"
+  flag-deny: "&7• &f/rg flag mybase time-lock deny &7- Freeze current time"
+
+  info-management: "&e📌 Information & Management:"
+  list: "&7• &f/rg list &7- List your regions"
+  info: "&7• &f/rg info mybase &7- Region information"
+  priority: "&7• &f/rg priority mybase 100 &7- Set priority 100"
+  delete: "&7• &f/rg delete mybase &7- Delete region"
+  show: "&7• &f/rg show mybase &7- Show region boundaries"
+  hide: "&7• &f/rg hide mybase &7- Hide region boundaries"
+
+  additional: "&e📌 Additional:"
+  wand: "&7• &f/rg wand &7- Get selection wand"
+  limit: "&7• &f/rg limit &7- Region limits information"
+  reload: "&7• &f/rg reload &7- Reload plugin (requires admin rights)"
+
+  tip: "&7💡 &7Tip: Click on commands in chat to automatically insert them!"
+
+# Notification system
+notifier:
+  test-started: "&eTest notifications started..."
+  test-completed: "&aTest notifications completed!"
+  message-sent: "&aMessage sent!"
+  usage: "&cUsage: /region notifier message <text>"
+
+help:
+  header: "&6=== RegionMC Help ==="
+  notifier-test: "&7/region notifier test &f- Test notifications"
+  notifier-message: "&7/region notifier message <text> &f- Send message"
