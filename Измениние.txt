@@ -5,7 +5,37 @@
 ```
 Добавление:
 -
--
+- Система аренды регионов
+
+- Менеджер аренды RentManager (управление ценами, арендами, сохранение в rents.yml)
+
+- Слушатель табличек RentSignListener (обработка кликов по табличкам [Rent])
+
+- Команды аренды:
+
+- /rg rent price <регион> <цена> <ед> — установить цену
+
+- /rg rent <регион> <кол-во><ед> — арендовать регион
+
+- /rg rent info <регион> — информация об аренде
+
+- /rg rent cancel <регион> — отменить аренду
+
+- /rg rent extend <регион> <кол-во><ед> — продлить аренду
+
+- бработка табличек с форматом [Rent] (регион, цена, единица)
+
+- Автоматическая проверка истечения аренды (каждую минуту)
+
+- Интеграция с экономикой Vault (списание/зачисление средств)
+
+- Права на аренду в paper-plugin.yml и permission.yml
+
+- Tab completion для команд аренды
+
+- Раздел в справке (/rg help) для команд аренды
+
+- Регистрация RentSignListener и инициализация RentManager в RegionMC
 -
 ```
 
@@ -25,12 +55,39 @@
 
 add:
 ```
--
--
--
--
--
--
+- Region rent system
+
+- RentManager (manages prices, rents, saves to rents.yml)
+
+- RentSignListener (handles clicks on [Rent] signs)
+
+- Rent commands:
+
+- /rg rent price <region> <price> <unit> — set price
+
+- /rg rent <region> <amount><unit> — rent a region
+
+- /rg rent info <region> — rent info
+
+- /rg rent cancel <region> — cancel rent
+
+- /rg rent extend <region> <amount><unit> — extend rent
+
+- Sign format [Rent] (region, price, unit)
+
+- Automatic rent expiry checking (every minute)
+
+- Vault economy integration (withdraw/deposit)
+
+- Rent permissions in paper-plugin.yml and permission.yml
+
+- Tab completion for rent commands
+
+- Help section for rent commands
+
+- RentSignListener registration and RentManager initialization in RegionMC
+
+
 ```
 
 Fixes:

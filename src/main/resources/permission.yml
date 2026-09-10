@@ -269,6 +269,28 @@ regionmc.bypass.all:
 regionmc.bypass.chat:
   description: "Обход блокировки чата в регионе"
 
+# ================================================
+# 🏷️ АРЕНДА РЕГИОНОВ
+# ================================================
+
+regionmc.command.rent:
+  description: "Доступ ко всем командам аренды"
+
+regionmc.rent.use:
+  description: "Право арендовать регион"
+
+regionmc.rent.price:
+  description: "Право устанавливать цену аренды (владелец региона)"
+
+regionmc.rent.cancel:
+  description: "Право отменять аренду (владелец или арендатор)"
+
+regionmc.rent.extend:
+  description: "Право продлевать аренду (только арендатор)"
+
+regionmc.rent.info:
+  description: "Право просматривать информацию об аренде"
+
 # Байпас для конкретного региона
 # regionmc.bypass.<название_региона>
 # Пример: regionmc.bypass.spawn - обход защиты региона spawn

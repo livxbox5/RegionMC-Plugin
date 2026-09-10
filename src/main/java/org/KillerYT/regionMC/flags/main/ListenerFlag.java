@@ -3,7 +3,7 @@ package org.KillerYT.regionMC.flags.main;
 import org.KillerYT.regionMC.RegionMC;
 import org.KillerYT.regionMC.managers.RegionManager;
 import org.KillerYT.regionMC.region.Region;
-import org.KillerYT.regionMC.utils.ColorUtil;
+import org.KillerYT.regionMC.region.ColorUtil;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;

@@ -1,9 +1,1 @@
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-        maven { url = 'https://maven.aliyun.com/repository/gradle-plugin' } // Альтернативный репозиторий
-        mavenCentral()
-    }
-}
-
 rootProject.name = 'RegionMC'

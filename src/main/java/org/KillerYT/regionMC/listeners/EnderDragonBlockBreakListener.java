@@ -14,8 +14,8 @@ public class EnderDragonBlockBreakListener implements Listener {
     private final RegionManager regionManager;
     private final RegionMC plugin;
 
-    public EnderDragonBlockBreakListener() {
-        this.plugin = RegionMC.getInstance();
+    public EnderDragonBlockBreakListener(RegionMC plugin) {
+        this.plugin = plugin;
         this.regionManager = plugin.getRegionManager();
     }
 

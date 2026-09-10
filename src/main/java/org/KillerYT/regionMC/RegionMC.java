@@ -3,13 +3,10 @@ package org.KillerYT.regionMC;
 import org.KillerYT.regionMC.commands.RegionCommand;
 import org.KillerYT.regionMC.commands.subcommands.RegionWandCommand;
 import org.KillerYT.regionMC.flags.main.FlagManager;
-import org.KillerYT.regionMC.listeners.EnderDragonBlockBreakListener;
-import org.KillerYT.regionMC.listeners.InfoListener;
-import org.KillerYT.regionMC.listeners.RegionListener;
-import org.KillerYT.regionMC.listeners.WandListener;
+import org.KillerYT.regionMC.listeners.*;
 import org.KillerYT.regionMC.managers.*;
 import org.KillerYT.regionMC.utils.ConfigGenerator;
-import org.KillerYT.regionMC.utils.DebugUtils;
+import org.killeryt.killerCoreAPI.utils.DebugUtils;
 import org.KillerYT.regionMC.utils.LanguageManager;
 import org.KillerYT.regionMC.utils.RegionEnterLeaveListener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -18,6 +15,7 @@ import lombok.Getter;
 import java.io.File;
 
 @Getter
+@SuppressWarnings("unused")
 public class RegionMC extends JavaPlugin {
 
     private RegionManager regionManager;
@@ -29,50 +27,41 @@ public class RegionMC extends JavaPlugin {
     private LanguageManager languageManager;
     private SettingsManager settingsManager;
     private ConfigGenerator configGenerator;
-    private AdminManager adminManager;
-    private static RegionMC instance;
+    private AdminManager adminManager;          // геттер будет сгенерирован
+    private RentManager rentManager;            // геттер будет сгенерирован
 
     @Override
     public void onEnable() {
-        instance = this;
+        // статический геттер будет сгенерирован
+        RegionMC instance = this;
 
-        // Инициализация DebugUtils (один раз)
         DebugUtils.getInstance().initialize(getLogger(), getConfig());
-
-        // Инициализация генератора конфигов
         this.configGenerator = new ConfigGenerator(this);
-
-        // Проверка и восстановление недостающих файлов при старте
         checkAndRestoreMissingFiles();
 
-        // Инициализация менеджеров
         this.settingsManager = new SettingsManager(this);
         this.languageManager = new LanguageManager(this);
         this.regionManager = new RegionManager(this);
+        this.rentManager = new RentManager(this);
         this.timeLockManager = new TimeLockManager(this);
         this.playerTimeManager = new PlayerTimeManager(this);
-        // Инициализация менеджера администраторов (только один раз)
         adminManager = new AdminManager(this);
 
-        // Инициализация FlagManager
         FlagManager.initialize(this);
         this.flagManager = FlagManager.getInstance();
 
-        // Инициализация WandCommand
         this.wandCommand = new RegionWandCommand(this);
 
-        // Регистрация слушателей
-        getServer().getPluginManager().registerEvents(new RegionListener(regionManager), this);
-        getServer().getPluginManager().registerEvents(new EnderDragonBlockBreakListener(), this);
+        getServer().getPluginManager().registerEvents(new RegionListener(regionManager, this), this);
+        getServer().getPluginManager().registerEvents(new EnderDragonBlockBreakListener(this), this);
         getServer().getPluginManager().registerEvents(new WandListener(this, wandCommand), this);
         getServer().getPluginManager().registerEvents(new InfoListener(this), this);
         getServer().getPluginManager().registerEvents(new RegionEnterLeaveListener(this), this);
+        getServer().getPluginManager().registerEvents(new RentSignListener(this), this);
 
-        // Инициализация команды
         this.regionCommand = new RegionCommand(this);
         this.regionCommand.registerAllCommands();
 
-        // Проверка наличия конфигурации
         checkConfigFolders();
 
         getLogger().info("RegionMC успешно загружен!");
@@ -114,13 +103,9 @@ public class RegionMC extends JavaPlugin {
     public void reloadManagers() {
         getLogger().info("Перезагрузка менеджеров RegionMC...");
 
-        // Перезагрузка конфигурации
         reloadConfig();
-
-        // Проверка и восстановление недостающих файлов
         checkAndRestoreMissingFiles();
 
-        // Перезагрузка менеджеров
         if (settingsManager != null) {
             settingsManager.reloadConfig();
         }
@@ -134,7 +119,7 @@ public class RegionMC extends JavaPlugin {
             playerTimeManager.reload();
         }
         if (adminManager != null) {
-            adminManager.reload(); // обновляем список администраторов
+            adminManager.reload();
         }
 
         getLogger().info("Все менеджеры перезагружены");
@@ -176,13 +161,5 @@ public class RegionMC extends JavaPlugin {
 
     public boolean isDebugEnabled() {
         return getConfig().getBoolean("debug.enabled", false);
-    }
-
-    public static RegionMC getInstance() {
-        return instance;
-    }
-
-    public AdminManager getAdminManager() {
-        return adminManager;
     }
 }

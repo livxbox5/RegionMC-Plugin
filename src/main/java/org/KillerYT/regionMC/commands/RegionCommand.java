@@ -28,6 +28,8 @@ public class RegionCommand implements CommandExecutor, TabCompleter {
     private final RegionExpandCommand expandCommand;
     private final TestPlaceholderCommand testPlaceholderCommand;
     private final RegionExampleCommand exampleCommand;
+    private final RegionRentCommand rentCommand;
+    private final RegionHelpCommand helpCommand;
     private final AdminManager adminManager;
     private final DebugUtils debug = DebugUtils.getInstance();
 
@@ -42,6 +44,8 @@ public class RegionCommand implements CommandExecutor, TabCompleter {
         this.expandCommand = new RegionExpandCommand(plugin);
         this.testPlaceholderCommand = new TestPlaceholderCommand(plugin);
         this.exampleCommand = new RegionExampleCommand(plugin);
+        this.rentCommand = new RegionRentCommand(plugin);
+        this.helpCommand = new RegionHelpCommand(plugin);
         debug.debug(DebugUtils.DebugCategory.COMMANDS, "RegionCommand инициализирован");
     }
 
@@ -71,6 +75,8 @@ public class RegionCommand implements CommandExecutor, TabCompleter {
             command.setAliases(aliases);
             command.setExecutor(this);
             command.setTabCompleter(this);
+            command.setPermission("regionmc.command.region");
+            command.setPermissionMessage("§cУ вас нет прав на использование команд RegionMC!");
 
             commandMap.register(plugin.getName().toLowerCase(), command);
             plugin.getLogger().info("✓ Command 'regionmc' registered with aliases: " + aliases);
@@ -80,23 +86,22 @@ public class RegionCommand implements CommandExecutor, TabCompleter {
         }
     }
 
-    /**
-     * Проверяет базовый доступ к плагину.
-     * Для консоли всегда возвращает true.
-     */
     private boolean hasBasicAccess(CommandSender sender) {
         if (!(sender instanceof Player player)) return true;
+
         if (adminManager != null && adminManager.isAdmin(player)) return true;
-        return player.isOp() ||
-                player.hasPermission("*") ||
-                player.hasPermission("regionmc.*") ||
-                player.hasPermission("regionmc.admin");
+
+        if (player.isOp()) return true;
+        if (player.hasPermission("*")) return true;
+        if (player.hasPermission("regionmc.*")) return true;
+        if (player.hasPermission("regionmc.admin")) return true;
+
+        if (player.hasPermission("regionmc.command.*")) return true;
+        if (player.hasPermission("regionmc.command.region")) return true;
+
+        return false;
     }
 
-    /**
-     * Проверяет наличие конкретного права.
-     * Для консоли всегда возвращает true.
-     */
     private boolean hasPermission(CommandSender sender, String permission) {
         if (!(sender instanceof Player player)) return true;
         return PermissionUtil.hasPermission(player, adminManager, permission);
@@ -114,7 +119,7 @@ public class RegionCommand implements CommandExecutor, TabCompleter {
                 sender.sendMessage("§cУ вас нет прав для просмотра помощи!");
                 return true;
             }
-            showHelp(sender);
+            helpCommand.execute(sender);
             return true;
         }
 
@@ -127,7 +132,7 @@ public class RegionCommand implements CommandExecutor, TabCompleter {
                         sender.sendMessage("§cУ вас нет прав для просмотра помощи!");
                         return true;
                     }
-                    showHelp(sender);
+                    helpCommand.execute(sender);
                 }
                 case "create", "claim" -> {
                     if (!hasPermission(sender, "regionmc.command.claim") && !hasPermission(sender, "regionmc.region.create")) {
@@ -278,7 +283,7 @@ public class RegionCommand implements CommandExecutor, TabCompleter {
                     testPlaceholderCommand.onCommand(sender, command, label, new String[0]);
                 }
                 case "example", "examples" -> {
-                    if (!hasPermission(sender, "regionmc.command.help")) {
+                    if (!hasPermission(sender, "regionmc.command.example")) {
                         sender.sendMessage("§cУ вас нет прав для просмотра примеров!");
                         return true;
                     }
@@ -297,6 +302,13 @@ public class RegionCommand implements CommandExecutor, TabCompleter {
                         return true;
                     }
                     handleLimit(sender);
+                }
+                case "rent" -> {
+                    if (!hasPermission(sender, "regionmc.command.rent")) {
+                        sender.sendMessage("§cУ вас нет прав на использование аренды!");
+                        return true;
+                    }
+                    rentCommand.execute(sender, args);
                 }
                 default -> sender.sendMessage("§cНеизвестная подкоманда! Используйте §f/" + label + " help");
             }
@@ -358,8 +370,11 @@ public class RegionCommand implements CommandExecutor, TabCompleter {
                 availableCommands.addAll(Arrays.asList("testplaceholders", "testpapi"));
             if (hasPermission(sender, "regionmc.command.limit"))
                 availableCommands.add("limit");
-            if (hasPermission(sender, "regionmc.command.help"))
-                availableCommands.addAll(Arrays.asList("example", "examples"));
+            // ИСПРАВЛЕНО: отдельное право для example, и убран examples
+            if (hasPermission(sender, "regionmc.command.example"))
+                availableCommands.add("example");
+            if (hasPermission(sender, "regionmc.command.rent"))
+                availableCommands.add("rent");
 
             String input = args[0].toLowerCase();
             for (String cmd : availableCommands) {
@@ -388,6 +403,13 @@ public class RegionCommand implements CommandExecutor, TabCompleter {
                     String[] flagArgs = Arrays.copyOfRange(args, 1, args.length);
                     return flagCommand.getTabCompleteSuggestions(player, flagArgs);
                 }
+            }
+
+            if ("rent".equals(subCommand)) {
+                if (hasPermission(sender, "regionmc.command.rent")) {
+                    return rentCommand.getTabCompletions(player, args);
+                }
+                return Collections.emptyList();
             }
 
             switch (subCommand) {
@@ -460,8 +482,6 @@ public class RegionCommand implements CommandExecutor, TabCompleter {
 
     // ==================== ОБРАБОТЧИКИ КОМАНД ====================
 
-    // --- Команды, требующие игрока ---
-
     private void handleCreate(Player player, String[] args) {
         if (args.length < 2) {
             player.sendMessage("§cИспользование: §f/regionmc create <имя>");
@@ -489,8 +509,6 @@ public class RegionCommand implements CommandExecutor, TabCompleter {
     private void handleWand(Player player) {
         wandCommand.execute(player);
     }
-
-    // --- Команды, работающие из консоли ---
 
     private void handleInfo(CommandSender sender, String[] args) {
         if (args.length < 2) {
@@ -747,54 +765,5 @@ public class RegionCommand implements CommandExecutor, TabCompleter {
                 player.sendMessage("§7⚠ Это только визуальный эффект для игроков в регионе!");
             }
         }
-    }
-
-    // --- Справка (для консоли и игроков) ---
-
-    private void showHelp(CommandSender sender) {
-        sender.sendMessage("§6=== RegionMC Помощь ===");
-        sender.sendMessage("§eОсновные команды:");
-
-        boolean isPlayer = sender instanceof Player;
-
-        java.util.function.BiConsumer<String, String> addCommand = (cmd, desc) -> {
-            if (isPlayer) {
-                if (hasPermission(sender, cmd)) {
-                    sender.sendMessage("§7/regionmc " + cmd + " §f- " + desc);
-                }
-            } else {
-                sender.sendMessage("§7/regionmc " + cmd + " §f- " + desc);
-            }
-        };
-
-        addCommand.accept("create <name>", "Создать регион (только для игроков)");
-        addCommand.accept("pos1/pos2", "Установить позиции (только для игроков)");
-        addCommand.accept("wand", "Получить палочку выделения (только для игроков)");
-        addCommand.accept("show/hide <name>", "Показать/скрыть границы (только для игроков)");
-
-        sender.sendMessage("§eИнформационные команды:");
-        addCommand.accept("limit", "Показать информацию о лимитах регионов");
-        addCommand.accept("info <name>", "Информация о регионе");
-        addCommand.accept("list", "Список всех регионов");
-
-        sender.sendMessage("§eУправление регионами:");
-        addCommand.accept("flag <region> <flag> <value>", "Установить флаг");
-        addCommand.accept("addmember <region> <player>", "Добавить участника");
-        addCommand.accept("addowner <region> <player>", "Добавить владельца");
-        addCommand.accept("removemember <region> <player>", "Удалить участника");
-        addCommand.accept("removeowner <region> <player>", "Удалить владельца");
-        addCommand.accept("priority <region> <priority>", "Установить приоритет");
-        addCommand.accept("delete <name>", "Удалить регион");
-        addCommand.accept("expand <blocks> <direction>", "Расширить текущий регион (только для игроков)");
-
-        sender.sendMessage("§eОтладочные команды:");
-        addCommand.accept("testplaceholders", "Тест плейсхолдеров RegionMC (только для игроков)");
-
-        sender.sendMessage("§eДополнительно:");
-        addCommand.accept("example", "Показать примеры использования");
-        addCommand.accept("reload", "Перезагрузить плагин");
-        addCommand.accept("help", "Показать эту справку");
-
-        sender.sendMessage("§eАлиасы: §f/region, /rg");
     }
 }

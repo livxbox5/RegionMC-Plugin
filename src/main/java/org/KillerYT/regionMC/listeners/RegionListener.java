@@ -17,9 +17,9 @@ public class RegionListener implements Listener {
     private final RegionManager regionManager;
     private final RegionMC plugin;
 
-    public RegionListener(RegionManager regionManager) {
+    public RegionListener(RegionManager regionManager, RegionMC plugin) {
         this.regionManager = regionManager;
-        this.plugin = RegionMC.getInstance();
+        this.plugin = plugin;
     }
 
     @EventHandler
@@ -71,7 +71,7 @@ public class RegionListener implements Listener {
     @EventHandler
     public void onEntityDamage(EntityDamageByEntityEvent event) {
         if (event.getDamager() instanceof Player player) {
-            if (regionManager.isAdminBypass(player)) return;  // <-- добавить
+            if (regionManager.isAdminBypass(player)) return;
 
             Region region = regionManager.getRegionAtLocation(event.getEntity().getLocation());
             if (region != null) {
@@ -105,26 +105,11 @@ public class RegionListener implements Listener {
         Region toRegion = regionManager.getRegionAtLocation(to);
         Region fromRegion = regionManager.getRegionAtLocation(from);
 
-        // КОММЕНТАРИЙ: Сообщения о входе/выходе отключены, так как они дублируются
-        // с сообщениями из EntryFlag и ExitFlag. Чтобы включить обратно - раскомментируйте код ниже.
-
-        /*
-        if (toRegion != null && !toRegion.equals(fromRegion)) {
-            if (plugin.getLanguageManager() != null && plugin.getConfig().getBoolean("regions.messages.show-entry-messages", true)) {
-                plugin.getLanguageManager().sendMessage(player, "region.enter", "name", toRegion.getName());
-            }
-        }
-
-        if (fromRegion != null && !fromRegion.equals(toRegion)) {
-            if (plugin.getLanguageManager() != null && plugin.getConfig().getBoolean("regions.messages.show-exit-messages", true)) {
-                plugin.getLanguageManager().sendMessage(player, "region.exit", "name", fromRegion.getName());
-            }
-        }
-        */
+        // Сообщения о входе/выходе отключены (дублируются с флагами)
     }
 
     private boolean isDenied(Player player, Location location, String flagName) {
-        if (regionManager.isAdminBypass(player)) return false;  // <-- добавить
+        if (regionManager.isAdminBypass(player)) return false;
 
         Region region = regionManager.getRegionAtLocation(location);
         if (region == null) return false;

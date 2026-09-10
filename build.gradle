@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'com.gradleup.shadow' version '8.3.0'
 }
 
 group = 'org.KillerYT'
@@ -16,6 +16,7 @@ java {
 
 repositories {
     mavenCentral()
+    mavenLocal()
     maven {
         name = "papermc"
         url = "https://repo.papermc.io/repository/maven-public/"
@@ -24,51 +25,49 @@ repositories {
         name = "placeholderapi"
         url = "https://repo.extendedclip.com/content/repositories/placeholderapi/"
     }
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
-    // Paper API (используется Paper 1.21.4, API версия 1.21.4-R0.1-SNAPSHOT)
     compileOnly "io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT"
-
-    // Adventure – входит в Paper API, но для явной зависимости можно добавить
-    // compileOnly "net.kyori:adventure-api:4.17.0"
-
-    // Lombok
     compileOnly 'org.projectlombok:lombok:1.18.34'
     annotationProcessor 'org.projectlombok:lombok:1.18.34'
-
-    // PlaceholderAPI (опционально, для совместимости)
     compileOnly 'me.clip:placeholderapi:2.11.6'
 
-    // BungeeCord Chat API (используется для ActionBar)
+    // Используем локальный JAR
+    implementation files('libs/KillerCoreAPI-1.0.0.jar')
+    // Удалите или закомментируйте следующую строку:
+    // implementation 'org.killeryt:KillerCoreAPI:1.0-SNAPSHOT'
+
+    // VaultAPI для надёжности (если в ядре compileOnly)
+    implementation('com.github.MilkBowl:VaultAPI:1.7') {
+        exclude group: 'org.bukkit', module: 'bukkit'
+    }
+
     compileOnly 'net.md-5:bungeecord-chat:1.20-R0.2'
 }
 
-// Настройка shadowJar (если нужно собрать fat jar)
+processResources {
+    filesMatching("paper-plugin.yml") {
+        expand(version: project.version)
+    }
+    filteringCharset = 'UTF-8'
+}
+
 shadowJar {
     archiveBaseName.set('RegionMC')
     archiveVersion.set(project.version)
     archiveClassifier.set('')
-    // Если вы хотите включить зависимости внутрь JAR, раскомментируйте:
-    // minimize()
-    // Но лучше оставить зависимости как compileOnly, чтобы сервер подгружал их сам.
+    mergeServiceFiles()
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
 }
 
-// Задача сборки
 build {
     dependsOn shadowJar
 }
 
-// Если вы не хотите shadowJar, можете использовать стандартный jar:
-// jar {
-//     manifest {
-//         attributes 'Main-Class': 'org.KillerYT.regionMC.RegionMC'
-//     }
-// }
-
-// Копирование собранного JAR в папку плагинов (опционально)
-// Можно добавить задачу для автоматической установки на сервер:
-// task deploy(type: Copy) {
-//     from shadowJar
-//     into 'C:/path/to/server/plugins'
-// }
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}

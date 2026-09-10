@@ -20,41 +20,25 @@ public class RegionHelpCommand {
             return true;
         }
 
-        // Старые проверки через player.hasPermission закомментированы.
-        // Используем PermissionUtil.hasPermission с учётом AdminManager.
-        boolean hasAdmin = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.admin");
-        // boolean hasAdmin = player.hasPermission("regionmc.admin"); // old
-
-        boolean hasCreate = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.region.create");
-        // boolean hasCreate = player.hasPermission("regionmc.region.create"); // old
-
-        boolean hasDelete = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.region.delete");
-        // boolean hasDelete = player.hasPermission("regionmc.region.delete"); // old
-
-        boolean hasFlag = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.region.flag");
-        // boolean hasFlag = player.hasPermission("regionmc.region.flag"); // old
-
-        boolean hasPos = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.region.pos");
-        // boolean hasPos = player.hasPermission("regionmc.region.pos"); // old
-
-        boolean hasExpand = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.region.expand");
-        // boolean hasExpand = player.hasPermission("regionmc.region.expand"); // old
-
-        boolean hasPriority = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.region.priority");
-        // boolean hasPriority = player.hasPermission("regionmc.region.priority"); // old
-
-        boolean hasOwnerManage = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.owner.manage");
-        // boolean hasOwnerManage = player.hasPermission("regionmc.owner.manage"); // old
-
-        boolean hasMemberManage = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.member.manage");
-        // boolean hasMemberManage = player.hasPermission("regionmc.member.manage"); // old
-
-        boolean hasShow = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.region.show");
-        // boolean hasShow = player.hasPermission("regionmc.region.show"); // old
+        boolean hasAdmin    = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.admin");
+        boolean hasCreate   = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.command.claim")
+                || PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.region.create");
+        boolean hasDelete   = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.command.delete")
+                || PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.region.delete");
+        boolean hasFlag     = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.command.flag");
+        boolean hasPos      = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.command.pos");
+        boolean hasExpand   = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.command.expand");
+        boolean hasPriority = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.command.priority");
+        boolean hasOwnerManage  = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.command.addowner");
+        boolean hasMemberManage = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.command.addmember");
+        boolean hasShow     = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.command.show");
+        boolean hasInfo     = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.command.info");
+        boolean hasList     = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.command.list");
+        boolean hasWand     = PermissionUtil.hasPermission(player, plugin.getAdminManager(), "regionmc.command.wand");
 
         player.sendMessage("§6=== RegionMC Commands ===");
 
-        // Основные команды с кликабельными примерами
+        // ==================== ОСНОВНЫЕ КОМАНДЫ ====================
         if (hasPos) {
             JsonMessageUtil.sendCompositeMessage(player,
                     JsonMessageUtil.createSuggestComponent(
@@ -63,7 +47,6 @@ public class RegionHelpCommand {
                             "/region pos1"
                     )
             );
-
             JsonMessageUtil.sendCompositeMessage(player,
                     JsonMessageUtil.createSuggestComponent(
                             "§7• §e/region pos2 §7- Set position 2 at your location",
@@ -103,22 +86,26 @@ public class RegionHelpCommand {
             );
         }
 
-        // Эти команды доступны всем (default: true)
-        JsonMessageUtil.sendCompositeMessage(player,
-                JsonMessageUtil.createSuggestComponent(
-                        "§7• §e/region info [name] §7- View region info",
-                        "§7Click to suggest command",
-                        "/region info "
-                )
-        );
+        // ==================== ИНФОРМАЦИОННЫЕ КОМАНДЫ ====================
+        if (hasInfo) {
+            JsonMessageUtil.sendCompositeMessage(player,
+                    JsonMessageUtil.createSuggestComponent(
+                            "§7• §e/region info [name] §7- View region info",
+                            "§7Click to suggest command",
+                            "/region info "
+                    )
+            );
+        }
 
-        JsonMessageUtil.sendCompositeMessage(player,
-                JsonMessageUtil.createRunComponent(
-                        "§7• §e/region list §7- List all regions",
-                        "§7Click to list regions",
-                        "/region list"
-                )
-        );
+        if (hasList) {
+            JsonMessageUtil.sendCompositeMessage(player,
+                    JsonMessageUtil.createRunComponent(
+                            "§7• §e/region list §7- List all regions",
+                            "§7Click to list regions",
+                            "/region list"
+                    )
+            );
+        }
 
         if (hasFlag) {
             JsonMessageUtil.sendCompositeMessage(player,
@@ -130,7 +117,7 @@ public class RegionHelpCommand {
             );
         }
 
-        // Команды управления участниками - показываем только если есть права
+        // ==================== УПРАВЛЕНИЕ УЧАСТНИКАМИ ====================
         boolean showMemberSection = hasOwnerManage || hasMemberManage;
         if (showMemberSection) {
             player.sendMessage("§6=== Member Management ===");
@@ -143,7 +130,6 @@ public class RegionHelpCommand {
                                 "/region addmember "
                         )
                 );
-
                 JsonMessageUtil.sendCompositeMessage(player,
                         JsonMessageUtil.createSuggestComponent(
                                 "§7• §e/region removemember <region> <player> §7- Remove member from region",
@@ -161,7 +147,6 @@ public class RegionHelpCommand {
                                 "/region addowner "
                         )
                 );
-
                 JsonMessageUtil.sendCompositeMessage(player,
                         JsonMessageUtil.createSuggestComponent(
                                 "§7• §e/region removeowner <region> <player> §7- Remove owner from region",
@@ -172,7 +157,7 @@ public class RegionHelpCommand {
             }
         }
 
-        // Быстрые действия - показываем только если есть права на создание
+        // ==================== БЫСТРЫЕ ДЕЙСТВИЯ ====================
         if (hasPos || hasCreate) {
             player.sendMessage("§6=== Quick Actions ===");
 
@@ -180,13 +165,15 @@ public class RegionHelpCommand {
                 JsonMessageUtil.sendCompositeMessage(player,
                         JsonMessageUtil.createSetPos1Button(),
                         JsonMessageUtil.createSetPos2Button(),
-                        JsonMessageUtil.createRunComponent(
+                        hasList
+                                ? JsonMessageUtil.createRunComponent(
                                 " §a[📋] List Regions",
                                 "§7View all your regions",
                                 "/region list"
                         )
+                                : JsonMessageUtil.createHelpButton()
                 );
-            } else {
+            } else if (hasList) {
                 JsonMessageUtil.sendCompositeMessage(player,
                         JsonMessageUtil.createRunComponent(
                                 " §a[📋] List Regions",
@@ -197,10 +184,9 @@ public class RegionHelpCommand {
             }
         }
 
-        // Быстрое создание региона - показываем только если есть права на создание
+        // ==================== БЫСТРОЕ СОЗДАНИЕ ====================
         if (hasCreate && hasPos) {
             player.sendMessage("§6=== Quick Creation ===");
-
             JsonMessageUtil.sendCompositeMessage(player,
                     JsonMessageUtil.createClaimButton(),
                     JsonMessageUtil.createRunComponent(
@@ -211,10 +197,9 @@ public class RegionHelpCommand {
             );
         }
 
-        // Административные команды - только для админов
+        // ==================== АДМИН-КОМАНДЫ ====================
         if (hasAdmin) {
             player.sendMessage("§6=== Admin Commands ===");
-
             JsonMessageUtil.sendCompositeMessage(player,
                     JsonMessageUtil.createRunComponent(
                             "§7• §c/region reload §7- Reload plugin configuration",
@@ -244,17 +229,15 @@ public class RegionHelpCommand {
             }
         }
 
-        // Информация о использовании
+        // ==================== СОВЕТЫ ====================
         player.sendMessage("§6=== Usage Tips ===");
         player.sendMessage("§7• Click on commands to insert them into chat");
         player.sendMessage("§7• Replace text in §e< >§7 with your values");
-        player.sendMessage("§7• Use §e/region example §7to see usage examples");
 
         if (hasCreate) {
             player.sendMessage("§7• Use §e/region claim §7after setting both positions");
         }
 
-        // Показываем информацию о правах
         if (!hasCreate && !hasDelete && !hasFlag) {
             player.sendMessage("§7• §8You have basic view-only permissions");
         } else if (hasCreate && hasDelete) {

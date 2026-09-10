@@ -3,7 +3,7 @@ package org.KillerYT.regionMC.listeners;
 import org.KillerYT.regionMC.RegionMC;
 import org.KillerYT.regionMC.commands.subcommands.RegionWandCommand;
 import org.KillerYT.regionMC.managers.RegionManager;
-import org.KillerYT.regionMC.utils.ColorUtil;
+import org.KillerYT.regionMC.region.ColorUtil;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;

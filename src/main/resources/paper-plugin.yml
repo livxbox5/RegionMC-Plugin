@@ -13,6 +13,10 @@ dependencies:
       load: BEFORE
       required: false
       join-classpath: true
+    KillerCoreAPI:
+      load: BEFORE
+      required: true
+      join-classpath: true
 
 commands:
   regionmc:
@@ -23,126 +27,189 @@ commands:
     permission-message: "§cУ вас нет прав на использование этой команды!"
 
 permissions:
+
+  # ================================================
+  # КОРНЕВОЕ ПРАВО — ВСЁ ВКЛЮЧЕНО
+  # ================================================
+  regionmc.*:
+    description: Полный доступ к плагину
+    default: false
+    children:
+      regionmc.admin: true
+      regionmc.command.*: true
+      regionmc.flags.*: true
+      regionmc.bypass.*: true
+      regionmc.limit.unlimited: true
+      regionmc.maxregions.unlimited: true
+      regionmc.region.create: true
+      regionmc.region.delete: true
+
+  # ================================================
+  # АДМИНИСТРАТОР
+  # ================================================
+  regionmc.admin:
+    description: Администратор плагина
+    default: op
+    children:
+      regionmc.command.*: true
+      regionmc.flags.*: true
+      regionmc.limit.unlimited: true
+      regionmc.maxregions.unlimited: true
+      regionmc.region.create: true
+      regionmc.region.delete: true
+
+  # ================================================
+  # РОДИТЕЛЬСКОЕ ПРАВО НА ВСЕ КОМАНДЫ
+  # ================================================
+  regionmc.command.*:
+    description: Доступ ко всем командам
+    default: false
+    children:
+      regionmc.command.region: true
+      regionmc.command.help: true
+      regionmc.command.example: true
+      regionmc.command.claim: true
+      regionmc.command.pos: true
+      regionmc.command.info: true
+      regionmc.command.list: true
+      regionmc.command.flag: true
+      regionmc.command.addmember: true
+      regionmc.command.addowner: true
+      regionmc.command.removemember: true
+      regionmc.command.removeowner: true
+      regionmc.command.priority: true
+      regionmc.command.delete: true
+      regionmc.command.wand: true
+      regionmc.command.expand: true
+      regionmc.command.show: true
+      regionmc.command.reload: true
+      regionmc.command.testplaceholders: true
+      regionmc.command.limit: true
+      regionmc.command.rent: true
+
+  # ================================================
+  # КОМАНДЫ
+  # ================================================
   regionmc.command.region:
-    description: Доступ к основной команде /regionmc, /region, /rg
+    description: Основная команда плагина
     default: false
 
   regionmc.command.help:
-    description: Доступ к /regionmc help
+    description: Справка
+    default: false
+
+  regionmc.command.example:
+    description: Примеры команд
     default: false
 
   regionmc.command.claim:
-    description: Доступ к /regionmc create и /regionmc claim
+    description: Создание региона
     default: false
 
   regionmc.command.pos:
-    description: Доступ к /regionmc pos1 и /regionmc pos2
+    description: Установка позиций
     default: false
 
   regionmc.command.info:
-    description: Доступ к /regionmc info
+    description: Информация о регионе
     default: false
 
   regionmc.command.list:
-    description: Доступ к /regionmc list
+    description: Список регионов
     default: false
 
   regionmc.command.flag:
-    description: Доступ к /regionmc flag
+    description: Управление флагами
     default: false
 
   regionmc.command.addmember:
-    description: Доступ к /regionmc addmember
+    description: Добавить участника
     default: false
 
   regionmc.command.addowner:
-    description: Доступ к /regionmc addowner
+    description: Добавить владельца
     default: false
 
   regionmc.command.removemember:
-    description: Доступ к /regionmc removemember
+    description: Удалить участника
     default: false
 
   regionmc.command.removeowner:
-    description: Доступ к /regionmc removeowner
+    description: Удалить владельца
     default: false
 
   regionmc.command.priority:
-    description: Доступ к /regionmc priority
+    description: Приоритет региона
     default: false
 
   regionmc.command.delete:
-    description: Доступ к /regionmc delete и /regionmc remove
+    description: Удаление региона
     default: false
 
   regionmc.command.wand:
-    description: Доступ к /regionmc wand
+    description: Палочка выделения
     default: false
 
   regionmc.command.expand:
-    description: Доступ к /regionmc expand
+    description: Расширение региона
     default: false
 
   regionmc.command.show:
-    description: Доступ к /regionmc show и /regionmc hide
+    description: Показ/скрытие границ
     default: false
 
   regionmc.command.reload:
-    description: Доступ к /regionmc reload
+    description: Перезагрузка плагина
     default: false
 
   regionmc.command.testplaceholders:
-    description: Доступ к /regionmc testplaceholders
+    description: Тест плейсхолдеров
     default: false
 
   regionmc.command.limit:
-    description: Доступ к /regionmc limit
+    description: Информация о лимитах
     default: false
 
-  # Права на действия с регионами
+  # ================================================
+  # ПРАВА НА ДЕЙСТВИЯ С РЕГИОНАМИ
+  # ================================================
   regionmc.region.create:
-    description: Право создавать регионы
+    description: Создание регионов
     default: false
     children:
       regionmc.command.claim: true
 
   regionmc.region.delete:
-    description: Право удалять регионы
+    description: Удаление регионов
     default: false
     children:
       regionmc.command.delete: true
 
-  # Права на управление флагами - ПОЛНЫЙ СПИСОК
+  # ================================================
+  # РОДИТЕЛЬСКОЕ ПРАВО НА ВСЕ ФЛАГИ
+  # ================================================
   regionmc.flags.*:
-    description: Полный доступ ко всем флаги
+    description: Доступ ко всем флагам
     default: false
     children:
       regionmc.command.flag: true
-      # Флаги строительства и взаимодействия
       regionmc.flags.build: true
       regionmc.flags.break: true
+      regionmc.flags.place: true
       regionmc.flags.interact: true
       regionmc.flags.use: true
       regionmc.flags.use-items: true
-
-      # Флаги PvP и урона
       regionmc.flags.pvp: true
       regionmc.flags.mob-damage: true
       regionmc.flags.fall-damage: true
       regionmc.flags.ender-dragon-damage: true
-
-      # Флаги доступа и перемещения
       regionmc.flags.entry: true
       regionmc.flags.exit: true
       regionmc.flags.chest-access: true
       regionmc.flags.enderchest: true
-
-      # Флаги предметов
       regionmc.flags.item-pickup: true
       regionmc.flags.item-drop: true
       regionmc.flags.exp-drops: true
-
-      # Флаги окружающей среды
       regionmc.flags.fire-spread: true
       regionmc.flags.explosions: true
       regionmc.flags.creeper-explosion: true
@@ -151,138 +218,154 @@ permissions:
       regionmc.flags.leaf-decay: true
       regionmc.flags.enderman-grief: true
       regionmc.flags.time-lock: true
-
-      # Флаги мобов
       regionmc.flags.mob-spawning: true
-
-      # Флаги коммуникаций и команд
       regionmc.flags.block-chat: true
       regionmc.flags.blockcmd: true
-
-      # Прочие флаги
       regionmc.flags.sleep: true
 
-  # Флаги строительства и взаимодействия
+  # ================================================
+  # ФЛАГИ СТРОИТЕЛЬСТВА И ВЗАИМОДЕЙСТВИЯ
+  # ================================================
   regionmc.flags.build:
-    description: Управление флагом строительства (build)
+    description: Флаг build
     default: false
 
   regionmc.flags.break:
-    description: Управление флагом ломания блоков (break)
+    description: Флаг break
+    default: false
+
+  regionmc.flags.place:
+    description: Флаг place
     default: false
 
   regionmc.flags.interact:
-    description: Управление флагом взаимодействия (interact)
+    description: Флаг interact
     default: false
 
   regionmc.flags.use:
-    description: Управление флагом использования (use)
+    description: Флаг use
     default: false
 
   regionmc.flags.use-items:
-    description: Управление флагом использования предметов (use-items)
+    description: Флаг use-items
     default: false
 
-  # Флаги PvP и урона
+  # ================================================
+  # ФЛАГИ PVP И УРОНА
+  # ================================================
   regionmc.flags.pvp:
-    description: Управление флагом PvP
+    description: Флаг pvp
     default: false
 
   regionmc.flags.mob-damage:
-    description: Управление флагом урона от мобов (mob-damage)
+    description: Флаг mob-damage
     default: false
 
   regionmc.flags.fall-damage:
-    description: Управление флагом урона от падения (fall-damage)
+    description: Флаг fall-damage
     default: false
 
   regionmc.flags.ender-dragon-damage:
-    description: Управление флагом урона от эндер-дракона (ender-dragon-damage)
+    description: Флаг ender-dragon-damage
     default: false
 
-  # Флаги доступа и перемещения
+  # ================================================
+  # ФЛАГИ ДОСТУПА И ПЕРЕМЕЩЕНИЯ
+  # ================================================
   regionmc.flags.entry:
-    description: Управление флагом входа в регион (entry)
+    description: Флаг entry
     default: false
 
   regionmc.flags.exit:
-    description: Управление флагом выхода из региона (exit)
+    description: Флаг exit
     default: false
 
   regionmc.flags.chest-access:
-    description: Управление флагом доступа к сундукам (chest-access)
+    description: Флаг chest-access
     default: false
 
   regionmc.flags.enderchest:
-    description: Управление флагом доступа к эндер-сундукам (enderchest)
+    description: Флаг enderchest
     default: false
 
-  # Флаги предметов
+  # ================================================
+  # ФЛАГИ ПРЕДМЕТОВ
+  # ================================================
   regionmc.flags.item-pickup:
-    description: Управление флагом подбора предметов (item-pickup)
+    description: Флаг item-pickup
     default: false
 
   regionmc.flags.item-drop:
-    description: Управление флагом выброса предметов (item-drop)
+    description: Флаг item-drop
     default: false
 
   regionmc.flags.exp-drops:
-    description: Управление флагом выпадения опыта (exp-drops)
+    description: Флаг exp-drops
     default: false
 
-  # Флаги окружающей среды
+  # ================================================
+  # ФЛАГИ ОКРУЖАЮЩЕЙ СРЕДЫ
+  # ================================================
   regionmc.flags.fire-spread:
-    description: Управление флагом распространения огня (fire-spread)
+    description: Флаг fire-spread
     default: false
 
   regionmc.flags.explosions:
-    description: Управление флагом взрывов (explosions)
+    description: Флаг explosions
     default: false
 
   regionmc.flags.creeper-explosion:
-    description: Управление флагом взрывов криперов (creeper-explosion)
+    description: Флаг creeper-explosion
     default: false
 
   regionmc.flags.pistons:
-    description: Управление флагом работы поршней (pistons)
+    description: Флаг pistons
     default: false
 
   regionmc.flags.grass-growth:
-    description: Управление флагом роста травы (grass-growth)
+    description: Флаг grass-growth
     default: false
 
   regionmc.flags.leaf-decay:
-    description: Управление флагом распада листьев (leaf-decay)
+    description: Флаг leaf-decay
     default: false
 
   regionmc.flags.enderman-grief:
-    description: Управление флагом грифа эндерменов (enderman-grief)
+    description: Флаг enderman-grief
     default: false
 
   regionmc.flags.time-lock:
-    description: Управление флагом блокировки времени (time-lock)
+    description: Флаг time-lock
     default: false
 
-  # Флаги мобов
+  # ================================================
+  # ФЛАГИ МОБОВ
+  # ================================================
   regionmc.flags.mob-spawning:
-    description: Управление флагом спавна мобов
+    description: Флаг mob-spawning
     default: false
 
-  # Флаги коммуникаций и команд
+  # ================================================
+  # ФЛАГИ КОММУНИКАЦИЙ И КОМАНД
+  # ================================================
   regionmc.flags.block-chat:
-    description: Управление флагом блокировки чата (block-chat)
+    description: Флаг block-chat
     default: false
 
   regionmc.flags.blockcmd:
-    description: Управление флагом блокировки команд (blockcmd)
+    description: Флаг blockcmd
     default: false
 
-  # Прочие флаги
+  # ================================================
+  # ПРОЧИЕ ФЛАГИ
+  # ================================================
   regionmc.flags.sleep:
-    description: Управление флагом сна (sleep)
+    description: Флаг sleep
     default: false
 
-    # Группы
+  # ================================================
+  # ГРУППА: БАЗОВЫЕ ПРАВА ПОЛЬЗОВАТЕЛЯ
+  # ================================================
   regionmc.command.user:
     description: Базовые права пользователя
     default: false
@@ -304,6 +387,7 @@ permissions:
       regionmc.command.priority: true
       regionmc.flags.build: true
       regionmc.flags.break: true
+      regionmc.flags.place: true
       regionmc.flags.interact: true
       regionmc.flags.use: true
       regionmc.flags.use-items: true
@@ -330,3 +414,132 @@ permissions:
       regionmc.flags.block-chat: true
       regionmc.flags.blockcmd: true
       regionmc.flags.sleep: true
+
+  # ================================================
+  # ЛИМИТЫ РАЗМЕРА
+  # ================================================
+  regionmc.limit.unlimited:
+    description: Безлимитный размер
+    default: false
+
+  regionmc.limit.10000:
+    description: Лимит 10 000
+    default: false
+
+  regionmc.limit.20000:
+    description: Лимит 20 000
+    default: false
+
+  regionmc.limit.30000:
+    description: Лимит 30 000
+    default: false
+
+  regionmc.limit.40000:
+    description: Лимит 40 000
+    default: false
+
+  regionmc.limit.50000:
+    description: Лимит 50 000
+    default: false
+
+  regionmc.limit.100000:
+    description: Лимит 100 000
+    default: false
+
+  # ================================================
+  # ЛИМИТЫ КОЛИЧЕСТВА РЕГИОНОВ
+  # ================================================
+  regionmc.maxregions.unlimited:
+    description: Безлимит регионов
+    default: false
+
+  regionmc.maxregions.1:
+    description: Максимум 1
+    default: false
+
+  regionmc.maxregions.2:
+    description: Максимум 2
+    default: false
+
+  regionmc.maxregions.3:
+    description: Максимум 3
+    default: false
+
+  regionmc.maxregions.5:
+    description: Максимум 5
+    default: false
+
+  regionmc.maxregions.10:
+    description: Максимум 10
+    default: false
+
+  regionmc.maxregions.15:
+    description: Максимум 15
+    default: false
+
+  regionmc.maxregions.20:
+    description: Максимум 20
+    default: false
+
+  regionmc.maxregions.25:
+    description: Максимум 25
+    default: false
+
+  regionmc.maxregions.50:
+    description: Максимум 50
+    default: false
+
+  regionmc.maxregions.100:
+    description: Максимум 100
+    default: false
+
+  # ================================================
+  # БАЙПАС
+  # ================================================
+  regionmc.bypass.*:
+    description: Обход защиты всех регионов
+    default: false
+    children:
+      regionmc.bypass.all: true
+      regionmc.bypass.chat: true
+
+  regionmc.bypass.all:
+    description: Обход защиты всех регионов
+    default: false
+
+  regionmc.bypass.chat:
+    description: Обход блокировки чата
+    default: false
+
+  # ================================================
+  # АРЕНДА РЕГИОНОВ
+  # ================================================
+  regionmc.command.rent:
+    description: Команды аренды
+    default: op
+    children:
+      regionmc.rent.use: true
+      regionmc.rent.price: true
+      regionmc.rent.cancel: true
+      regionmc.rent.extend: true
+      regionmc.rent.info: true
+
+  regionmc.rent.use:
+    description: Аренда регионов
+    default: true
+
+  regionmc.rent.price:
+    description: Установка цены аренды
+    default: op
+
+  regionmc.rent.cancel:
+    description: Отмена аренды
+    default: true
+
+  regionmc.rent.extend:
+    description: Продление аренды
+    default: true
+
+  regionmc.rent.info:
+    description: Информация об аренде
+    default: true

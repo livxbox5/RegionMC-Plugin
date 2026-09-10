@@ -1,7 +1,7 @@
 package org.KillerYT.regionMC.commands.subcommands;
 
 import org.KillerYT.regionMC.RegionMC;
-import org.KillerYT.regionMC.utils.ColorUtil;
+import org.KillerYT.regionMC.region.ColorUtil;
 import org.KillerYT.regionMC.utils.PermissionUtil;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
