@@ -6,10 +6,11 @@ import org.KillerYT.regionMC.flags.main.FlagManager;
 import org.KillerYT.regionMC.listeners.*;
 import org.KillerYT.regionMC.managers.*;
 import org.KillerYT.regionMC.utils.ConfigGenerator;
-import org.killeryt.killerCoreAPI.utils.DebugUtils;
 import org.KillerYT.regionMC.utils.LanguageManager;
-import org.KillerYT.regionMC.utils.RegionEnterLeaveListener;
+import org.bukkit.Bukkit;
+import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.killeryt.killerCoreAPI.utils.DebugUtils;
 import lombok.Getter;
 
 import java.io.File;
@@ -27,14 +28,21 @@ public class RegionMC extends JavaPlugin {
     private LanguageManager languageManager;
     private SettingsManager settingsManager;
     private ConfigGenerator configGenerator;
-    private AdminManager adminManager;          // геттер будет сгенерирован
-    private RentManager rentManager;            // геттер будет сгенерирован
+    private AdminManager adminManager;
+    private RentManager rentManager;
 
     @Override
     public void onEnable() {
-        // статический геттер будет сгенерирован
-        RegionMC instance = this;
+        // ============================================================
+        // 1. СНЯТЬ всё, что могло остаться от прошлой загрузки
+        //    (защита от PlugManX, /reload, повторного enable)
+        // ============================================================
+        HandlerList.unregisterAll(this);
+        Bukkit.getScheduler().cancelTasks(this);
 
+        // ============================================================
+        // 2. Инициализация
+        // ============================================================
         DebugUtils.getInstance().initialize(getLogger(), getConfig());
         this.configGenerator = new ConfigGenerator(this);
         checkAndRestoreMissingFiles();
@@ -45,35 +53,56 @@ public class RegionMC extends JavaPlugin {
         this.rentManager = new RentManager(this);
         this.timeLockManager = new TimeLockManager(this);
         this.playerTimeManager = new PlayerTimeManager(this);
-        adminManager = new AdminManager(this);
+        this.adminManager = new AdminManager(this);
 
         FlagManager.initialize(this);
         this.flagManager = FlagManager.getInstance();
 
         this.wandCommand = new RegionWandCommand(this);
 
-        getServer().getPluginManager().registerEvents(new RegionListener(regionManager, this), this);
-        getServer().getPluginManager().registerEvents(new EnderDragonBlockBreakListener(this), this);
-        getServer().getPluginManager().registerEvents(new WandListener(this, wandCommand), this);
-        getServer().getPluginManager().registerEvents(new InfoListener(this), this);
-        getServer().getPluginManager().registerEvents(new RegionEnterLeaveListener(this), this);
-        getServer().getPluginManager().registerEvents(new RentSignListener(this), this);
+        // ============================================================
+        // 3. Регистрация ВСЕХ листенеров — только здесь
+        // ============================================================
+        registerListeners();
 
+        // ============================================================
+        // 4. Команды
+        // ============================================================
         this.regionCommand = new RegionCommand(this);
         this.regionCommand.registerAllCommands();
 
         checkConfigFolders();
 
         getLogger().info("RegionMC успешно загружен!");
-        getLogger().info("WandListener и InfoListener зарегистрированы!");
     }
 
     @Override
     public void onDisable() {
+        // 1) снимаем ВСЕ листенеры этого плагина
+        HandlerList.unregisterAll(this);
+
+        // 2) отменяем все задачи (PlayerTimeManager-таймер и т.п.)
+        Bukkit.getScheduler().cancelTasks(this);
+
+        // 3) сохраняем регионы
         if (regionManager != null) {
             regionManager.saveRegions();
         }
+
         getLogger().info("RegionMC выгружен!");
+    }
+
+    /**
+     * Единственное место, где регистрируются листенеры.
+     * Ничего больше их нигде не подключает.
+     */
+    private void registerListeners() {
+        getServer().getPluginManager().registerEvents(new RegionListener(regionManager, this), this);
+        getServer().getPluginManager().registerEvents(new EnderDragonBlockBreakListener(this), this);
+        getServer().getPluginManager().registerEvents(new WandListener(this, wandCommand), this);
+        getServer().getPluginManager().registerEvents(new InfoListener(this), this);
+        getServer().getPluginManager().registerEvents(new RegionEnterLeaveListener(this), this);
+        getServer().getPluginManager().registerEvents(new RentSignListener(this), this);
     }
 
     private void checkConfigFolders() {
@@ -106,21 +135,11 @@ public class RegionMC extends JavaPlugin {
         reloadConfig();
         checkAndRestoreMissingFiles();
 
-        if (settingsManager != null) {
-            settingsManager.reloadConfig();
-        }
-        if (languageManager != null) {
-            languageManager.reloadLanguage();
-        }
-        if (regionManager != null) {
-            regionManager.reload();
-        }
-        if (playerTimeManager != null) {
-            playerTimeManager.reload();
-        }
-        if (adminManager != null) {
-            adminManager.reload();
-        }
+        if (settingsManager != null) settingsManager.reloadConfig();
+        if (languageManager != null) languageManager.reloadLanguage();
+        if (regionManager != null) regionManager.reload();
+        if (playerTimeManager != null) playerTimeManager.reload();
+        if (adminManager != null) adminManager.reload();
 
         getLogger().info("Все менеджеры перезагружены");
     }

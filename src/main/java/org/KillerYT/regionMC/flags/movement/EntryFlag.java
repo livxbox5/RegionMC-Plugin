@@ -10,8 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.UUID;
-
 public class EntryFlag extends ListenerFlag<Boolean> {
 
     public EntryFlag(RegionMC plugin) {
@@ -54,7 +52,6 @@ public class EntryFlag extends ListenerFlag<Boolean> {
             if (!regionManager.canEnterRegion(p.getUniqueId(), toRegion)) {
                 event.setCancelled(true);
 
-                // ===== КАСТОМНОЕ СООБЩЕНИЕ (entry-deny-message) =====
                 Region region = regionManager.getRegion(toRegion);
                 String customMsg = null;
                 if (region != null) {
@@ -76,33 +73,7 @@ public class EntryFlag extends ListenerFlag<Boolean> {
                 p.sendMessage("§aВы вошли в регион §e" + toRegion);
             }
 
-            // Уведомление другим (если флаг enter-notify = allow)
-            Region region = regionManager.getRegion(toRegion);
-            if (region != null) {
-                notifyOthers(p, region, "enter");
-            }
-        }
-    }
-
-    private void notifyOthers(Player player, Region region, String type) {
-        String flagName = type.equals("enter") ? "enter-notify" : "exit-notify";
-        Boolean flagValue = region.getFlagBoolean(flagName);
-        if (flagValue == null || !flagValue) return;
-
-        String messageKey = "region.notify." + type;
-        String message = plugin.getLanguageManager().getMessage(messageKey, region.getName(), player.getName());
-
-        for (UUID uuid : region.getOwners()) {
-            Player target = plugin.getServer().getPlayer(uuid);
-            if (target != null && !target.equals(player)) {
-                target.sendMessage(ColorUtil.colorize(message));
-            }
-        }
-        for (UUID uuid : region.getMembers()) {
-            Player target = plugin.getServer().getPlayer(uuid);
-            if (target != null && !target.equals(player)) {
-                target.sendMessage(ColorUtil.colorize(message));
-            }
+            // Уведомление других (send by RegionEnterLeaveListener — единая точка)
         }
     }
 }

@@ -10,8 +10,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.UUID;
-
 public class ExitFlag extends ListenerFlag<Boolean> {
 
     public ExitFlag(RegionMC plugin) {
@@ -58,7 +56,6 @@ public class ExitFlag extends ListenerFlag<Boolean> {
                 if (plugin.getConfig().getBoolean("regions.messages.show-exit-messages", true)) {
                     p.sendMessage("§cВы вышли из региона §e" + fromRegion);
                 }
-                notifyOthers(p, region, "exit");
                 return;
             }
 
@@ -66,7 +63,6 @@ public class ExitFlag extends ListenerFlag<Boolean> {
             if (!getFlagBoolean(region, "exit")) {
                 event.setCancelled(true);
 
-                // ===== КАСТОМНОЕ СООБЩЕНИЕ (exit-deny-message) =====
                 String customMsg = null;
                 Object raw = region.getFlag("exit-deny-message");
                 if (raw instanceof String) {
@@ -81,29 +77,6 @@ public class ExitFlag extends ListenerFlag<Boolean> {
                 if (plugin.getConfig().getBoolean("regions.messages.show-exit-messages", true)) {
                     p.sendMessage("§cВы вышли из региона §e" + fromRegion);
                 }
-                notifyOthers(p, region, "exit");
-            }
-        }
-    }
-
-    private void notifyOthers(Player player, Region region, String type) {
-        String flagName = type.equals("enter") ? "enter-notify" : "exit-notify";
-        Boolean flagValue = region.getFlagBoolean(flagName);
-        if (flagValue == null || !flagValue) return;
-
-        String messageKey = "region.notify." + type;
-        String message = plugin.getLanguageManager().getMessage(messageKey, region.getName(), player.getName());
-
-        for (UUID uuid : region.getOwners()) {
-            Player target = plugin.getServer().getPlayer(uuid);
-            if (target != null && !target.equals(player)) {
-                target.sendMessage(ColorUtil.colorize(message));
-            }
-        }
-        for (UUID uuid : region.getMembers()) {
-            Player target = plugin.getServer().getPlayer(uuid);
-            if (target != null && !target.equals(player)) {
-                target.sendMessage(ColorUtil.colorize(message));
             }
         }
     }

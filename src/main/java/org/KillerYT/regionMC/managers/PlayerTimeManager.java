@@ -35,7 +35,7 @@ public class PlayerTimeManager {
 
         if (region != null) {
             String timeLockValue = region.getFlagValue("time-lock", String.class);
-            if (timeLockValue != null && isTimeLocked(timeLockValue)) {
+            if (isTimeLocked(timeLockValue)) {
                 applyTimeLock(player, playerId, timeLockValue);
                 return;
             }
@@ -92,13 +92,24 @@ public class PlayerTimeManager {
                 .forEach(this::updatePlayerTime);
     }
 
+    // =====================================================
+    // Вход в регион — time-lock
+    // Защита от повторов: в RegionEnterLeaveListener
+    // =====================================================
     public void handlePlayerEnterRegion(Player player, Region region) {
+        if (player == null || region == null) return;
         updatePlayerTime(player);
     }
 
+    // =====================================================
+    // Выход из региона — time-lock
+    // Защита от повторов: в RegionEnterLeaveListener
+    // =====================================================
     public void handlePlayerLeaveRegion(Player player, Region region) {
+        if (player == null || region == null) return;
+
         String timeLockValue = region.getFlagValue("time-lock", String.class);
-        if (timeLockValue != null && isTimeLocked(timeLockValue)) {
+        if (isTimeLocked(timeLockValue)) {
             resetPlayerTime(player);
         }
     }

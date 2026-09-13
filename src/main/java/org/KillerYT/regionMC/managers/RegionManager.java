@@ -13,6 +13,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
+import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -127,9 +128,7 @@ public class RegionManager implements Listener {
         int volume = calculateVolume(pos1, pos2);
 
         // ========== ПРОВЕРКА РАЗМЕРА РЕГИОНА ==========
-        // Проверка включена ли проверка размеров
         if (areSizeChecksEnabled() && areLimitsEnabled()) {
-            // Проверяем минимальный размер
             int minSize = getMinRegionSize();
             if (minSize > 0 && volume < minSize) {
                 player.sendMessage("§cРегион слишком маленький! Минимальный размер: §e" + minSize + " §cблоков");
@@ -137,7 +136,6 @@ public class RegionManager implements Listener {
                 return false;
             }
 
-            // Проверяем максимальный размер
             int maxSize = getMaxRegionSizeForPlayer(player);
             if (maxSize > 0 && volume > maxSize) {
                 player.sendMessage("§cРегион слишком большой! Максимальный размер: §e" + maxSize + " §cблоков");
@@ -145,13 +143,10 @@ public class RegionManager implements Listener {
                 return false;
             }
 
-            // Проверяем высоту
             int maxHeight = getMaxRegionHeight();
             int minY = Math.min(pos1.getBlockY(), pos2.getBlockY());
             int maxY = Math.max(pos1.getBlockY(), pos2.getBlockY());
 
-            // Если maxHeight > 0 - проверяем ограничение
-            // Если maxHeight == Integer.MAX_VALUE (из-за -1) - безлимитно
             if (maxHeight > 0 && maxHeight != Integer.MAX_VALUE && maxY > maxHeight) {
                 player.sendMessage("§cРегион слишком высокий! Максимальная высота: §e" + maxHeight + " §cблоков");
                 return false;
@@ -186,11 +181,9 @@ public class RegionManager implements Listener {
         pos1Selections.remove(playerId);
         pos2Selections.remove(playerId);
 
-        // Информация для игрока
         player.sendMessage("§aРегион '" + name + "' успешно создан с приоритетом 1!");
         player.sendMessage("§7Размер региона: §e" + volume + " §7блоков");
 
-        // Показываем информацию о лимитах только если они включены
         if (areLimitsEnabled()) {
             int maxSize = getMaxRegionSizeForPlayer(player);
             if (maxSize != -1 && maxSize != 0) {
@@ -199,8 +192,6 @@ public class RegionManager implements Listener {
             } else if (maxSize == -1) {
                 player.sendMessage("§aУ вас безлимитный доступ к созданию регионов по размеру!");
             }
-
-            // Показываем информацию о лимите количества регионов
             player.sendMessage(getMaxRegionsMessage(player));
         } else {
             player.sendMessage("§aЛимиты регионов отключены на сервере!");
@@ -243,9 +234,9 @@ public class RegionManager implements Listener {
             region.setFlag("exit", "allow");
             region.setFlag("chest-access", "deny");
             region.setFlag("block-chat", "allow");
-            region.setFlag("tnt-explosion", "deny");      // ЗАПРЕЩЕНО
-            region.setFlag("creeper-explosion", "deny");  // ЗАПРЕЩЕНО
-            region.setFlag("explosions", "deny");         // ЗАПРЕЩЕНО
+            region.setFlag("tnt-explosion", "deny");
+            region.setFlag("creeper-explosion", "deny");
+            region.setFlag("explosions", "deny");
             region.setFlag("enter-notify", "deny");
             region.setFlag("exit-notify", "deny");
         }
@@ -321,16 +312,10 @@ public class RegionManager implements Listener {
         return removeRegion(name, null);
     }
 
-    /**
-     * Проверяет существование региона
-     */
     public boolean regionExists(String name) {
         return regions.containsKey(name);
     }
 
-    /**
-     * Получает регион по имени
-     */
     public Region getRegion(String name) {
         Region exactMatch = regions.get(name);
         if (exactMatch != null) {
@@ -343,9 +328,6 @@ public class RegionManager implements Listener {
                 .orElse(null);
     }
 
-    /**
-    *
-    */
     public boolean canExitRegion(UUID playerId, String regionName) {
         Region region = getRegion(regionName);
         if (region == null) return true;
@@ -469,50 +451,102 @@ public class RegionManager implements Listener {
     }
 
     // =============================================
-// МЕТОДЫ ДЛЯ ПРОВЕРКИ ДОСТУПА С УЧЁТОМ АДМИНИСТРАТОРА
-// =============================================
+    // МЕТОДЫ ДЛЯ ПРОВЕРКИ ДОСТУПА С УЧЁТОМ АДМИНИСТРАТОРА И PERMISSIONS
+    // =============================================
+
+    /**
+     * Обход защиты с учётом конкретного региона.
+     *
+     * Логика:
+     *   1. Если для игрока ЯВНО установлен регион-специфичный узел
+     *      (regionmc.bypass.<регион> = true/false) — используем его значение.
+     *   2. Иначе смотрим глобальные узлы:
+     *        regionmc.bypass.*  или  regionmc.bypass
+     *   3. В крайнем случае — список администраторов из main.yml.
+     *
+     * Пример:
+     *   regionmc.bypass.* = true
+     *   regionmc.bypass.test2 = false
+     *   → для test2 вернётся false, для остальных регионов true.
+     */
+    public boolean canBypass(Player player, String regionName) {
+        if (player == null) return false;
+
+        // 1. Точная проверка конкретного региона — приоритет над wildcard
+        if (regionName != null) {
+            String specific = "regionmc.bypass." + regionName.toLowerCase();
+
+            // Ищем точную запись в effective permissions.
+            // LuckPerms не разворачивает wildcard в effective permissions,
+            // поэтому здесь мы увидим именно явно выставленные узлы.
+            for (org.bukkit.permissions.PermissionAttachmentInfo pai
+                    : player.getEffectivePermissions()) {
+                if (pai.getPermission().equalsIgnoreCase(specific)) {
+                    return pai.getValue(); // true → обход, false → нет обхода
+                }
+            }
+            // если явной записи нет — падаем в wildcard-проверку ниже
+        }
+
+        // 2. Глобальный обход
+        if (player.hasPermission("regionmc.bypass.*")
+                || player.hasPermission("regionmc.bypass")) {
+            return true;
+        }
+
+        // 3. Старый список администраторов
+        return adminManager != null && adminManager.isAdmin(player);
+    }
+
+    /**
+     * Устаревший метод — оставлен для совместимости.
+     * Работает без учёта региона.
+     */
+    private boolean hasAdminBypass(Player player) {
+        return canBypass(player, null);
+    }
 
     public boolean isAdminBypass(Player player) {
-        return hasAdminBypass(player);
+        return canBypass(player, null);
     }
 
     public boolean canBuildInRegion(Player player, String regionName) {
-        if (hasAdminBypass(player)) return true;
+        if (canBypass(player, regionName)) return true;
         return canBuildInRegion(player.getUniqueId(), regionName);
     }
 
     public boolean canBreakInRegion(Player player, String regionName) {
-        if (hasAdminBypass(player)) return true;
+        if (canBypass(player, regionName)) return true;
         return canBreakInRegion(player.getUniqueId(), regionName);
     }
 
     public boolean canPlaceInRegion(Player player, String regionName) {
-        if (hasAdminBypass(player)) return true;
+        if (canBypass(player, regionName)) return true;
         return canPlaceInRegion(player.getUniqueId(), regionName);
     }
 
     public boolean canInteractInRegion(Player player, String regionName) {
-        if (hasAdminBypass(player)) return true;
+        if (canBypass(player, regionName)) return true;
         return canInteractInRegion(player.getUniqueId(), regionName);
     }
 
     public boolean canUseInRegion(Player player, String regionName) {
-        if (hasAdminBypass(player)) return true;
+        if (canBypass(player, regionName)) return true;
         return canUseInRegion(player.getUniqueId(), regionName);
     }
 
     public boolean canOpenEnderChestInRegion(Player player, String regionName) {
-        if (hasAdminBypass(player)) return true;
+        if (canBypass(player, regionName)) return true;
         return canOpenEnderChestInRegion(player.getUniqueId(), regionName);
     }
 
     public boolean canEnterRegion(Player player, String regionName) {
-        if (hasAdminBypass(player)) return true;
+        if (canBypass(player, regionName)) return true;
         return canEnterRegion(player.getUniqueId(), regionName);
     }
 
     public boolean canExitRegion(Player player, String regionName) {
-        if (hasAdminBypass(player)) return true;
+        if (canBypass(player, regionName)) return true;
         return canExitRegion(player.getUniqueId(), regionName);
     }
 
@@ -574,8 +608,6 @@ public class RegionManager implements Listener {
         if (location == null || location.getWorld() == null) {
             if (player != null) {
                 player.sendMessage("§cОшибка: неверная локация!");
-            }
-            if (player != null) {
                 pos1Selections.remove(player.getUniqueId());
             }
             return;
@@ -591,8 +623,6 @@ public class RegionManager implements Listener {
         if (location == null || location.getWorld() == null) {
             if (player != null) {
                 player.sendMessage("§cОшибка: неверная локация!");
-            }
-            if (player != null) {
                 pos2Selections.remove(player.getUniqueId());
             }
             return;
@@ -790,7 +820,6 @@ public class RegionManager implements Listener {
     // =============================================
 
     private File findLimitFile() {
-        // Приоритетный поиск в папке Settings
         String[] possiblePaths = {
                 "Settings/limit.yml",
                 "settings/limit.yml",
@@ -811,7 +840,6 @@ public class RegionManager implements Listener {
             }
         }
 
-        // Если не нашли - создаем в корне
         File defaultFile = new File(dataFolder, "limit.yml");
         if (!defaultFile.exists()) {
             createDefaultLimitFile(defaultFile);
@@ -853,10 +881,6 @@ public class RegionManager implements Listener {
         }
     }
 
-    // =============================================
-    // МЕТОДЫ ДЛЯ РАБОТЫ С РАЗМЕРАМИ РЕГИОНОВ ИЗ limit.yml
-    // =============================================
-
     public boolean areSizeChecksEnabled() {
         try {
             File limitFile = findLimitFile();
@@ -887,7 +911,6 @@ public class RegionManager implements Listener {
 
             int minSize = limitConfig.getInt("size-limits.min-size", 5);
 
-            // -1 или 0 → безлимитный минимум
             if (minSize <= 0) {
                 return 0;
             }
@@ -898,7 +921,6 @@ public class RegionManager implements Listener {
         }
     }
 
-    // В методе getMaxRegionHeight()
     public int getMaxRegionHeight() {
         try {
             File limitFile = findLimitFile();
@@ -912,9 +934,8 @@ public class RegionManager implements Listener {
 
             int maxHeight = limitConfig.getInt("size-limits.max-height", 256);
 
-            // -1 или 0 → безлимитно (возвращаем максимальную высоту мира)
             if (maxHeight <= 0) {
-                return Integer.MAX_VALUE; // Важно! Не 32000, а Integer.MAX_VALUE
+                return Integer.MAX_VALUE;
             }
 
             return maxHeight;
@@ -1121,34 +1142,26 @@ public class RegionManager implements Listener {
     // МЕТОДЫ ДЛЯ ПРОВЕРКИ КОЛИЧЕСТВА РЕГИОНОВ ИГРОКА
     // =============================================
 
-    /**
-     * Главный метод получения максимального количества регионов для игрока
-     */
     public int getMaxRegionsForPlayer(Player player) {
-        // Администраторы и ОП - безлимит
         if (player.hasPermission("regionmc.admin") || player.isOp()) {
             return -1;
         }
 
-        // ========== 1. ПРОВЕРКА ПРАВ ИЗ permission-limits В limit.yml ==========
         int permissionLimit = getMaxRegionsFromPermissions(player);
         if (permissionLimit != Integer.MIN_VALUE) {
             return permissionLimit;
         }
 
-        // ========== 2. ПРОВЕРКА ПРЯМЫХ ПРАВ (без limit.yml) ==========
         int directPermissionLimit = getMaxRegionsFromDirectPermissions(player);
         if (directPermissionLimit != Integer.MIN_VALUE) {
             return directPermissionLimit;
         }
 
-        // ========== 3. ПРОВЕРКА ГРУПП ИЗ limit.yml ==========
         int groupLimit = getMaxRegionsFromGroups(player);
         if (groupLimit != Integer.MIN_VALUE) {
             return groupLimit;
         }
 
-        // ========== 4. ЗНАЧЕНИЕ ПО УМОЛЧАНИЮ ==========
         int limitYmlLimit = getDefaultMaxRegionsFromLimitYml();
         if (limitYmlLimit > 0) {
             return limitYmlLimit;
@@ -1159,15 +1172,10 @@ public class RegionManager implements Listener {
             return mainYmlLimit;
         }
 
-        return 5; // Значение по умолчанию
+        return 5;
     }
 
-    /**
-     * Проверяет права напрямую (без чтения limit.yml)
-     * Права: regionmc.maxregions.1, regionmc.maxregions.5, regionmc.maxregions.10 и т.д.
-     */
     private int getMaxRegionsFromDirectPermissions(Player player) {
-        // Список возможных лимитов (от большего к меньшему)
         int[] possibleLimits = {1000, 500, 250, 100, 50, 25, 20, 15, 10, 5, 3, 2, 1};
 
         for (int limit : possibleLimits) {
@@ -1178,7 +1186,6 @@ public class RegionManager implements Listener {
             }
         }
 
-        // Проверка на безлимит
         if (player.hasPermission("regionmc.maxregions.unlimited")) {
             plugin.getLogger().info("Player " + player.getName() + " has unlimited regions permission");
             return -1;
@@ -1187,9 +1194,6 @@ public class RegionManager implements Listener {
         return Integer.MIN_VALUE;
     }
 
-    /**
-     * Получает лимит из permission-limits в limit.yml
-     */
     private int getMaxRegionsFromPermissions(Player player) {
         try {
             File limitFile = findLimitFile();
@@ -1200,7 +1204,6 @@ public class RegionManager implements Listener {
 
             if (permissionLimitsList.isEmpty()) return Integer.MIN_VALUE;
 
-            // Собираем все доступные лимиты и выбираем максимальный
             int maxFound = Integer.MIN_VALUE;
 
             for (Object obj : permissionLimitsList) {
@@ -1231,9 +1234,6 @@ public class RegionManager implements Listener {
         }
     }
 
-    /**
-     * Получает лимит из групп в limit.yml
-     */
     private int getMaxRegionsFromGroups(Player player) {
         try {
             File limitFile = findLimitFile();
@@ -1483,7 +1483,7 @@ public class RegionManager implements Listener {
     }
 
     public boolean hasModifyPermission(Player player, String regionName) {
-        if (hasAdminBypass(player)) return true;
+        if (canBypass(player, regionName)) return true;
         Region region = getRegion(regionName);
         if (region == null) return false;
         return region.isOwner(player.getUniqueId()) || player.hasPermission("regionmc.admin");
@@ -1542,7 +1542,6 @@ public class RegionManager implements Listener {
             player.sendMessage("§7Проверка размеров: §aВКЛЮЧЕНА");
             player.sendMessage("§aМинимальный размер: §e" + minSize + " §aблоков");
 
-            // ИСПРАВЛЕНИЕ: отображение безлимитной высоты
             if (maxHeight == Integer.MAX_VALUE) {
                 player.sendMessage("§aМаксимальная высота: §6безлимитно");
             } else {
@@ -1653,9 +1652,5 @@ public class RegionManager implements Listener {
             settingsManager = new SettingsManager(plugin);
         }
         return settingsManager;
-    }
-
-    private boolean hasAdminBypass(Player player) {
-        return player != null && adminManager != null && adminManager.isAdmin(player);
     }
 }
